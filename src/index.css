@@ -1,0 +1,69 @@
+:root {
+  --paper: #f7f3e9;
+  --forest: #1b4332;
+  --leaf: #2e7d32;
+  --sprout: #4caf50;
+  --sand: #e8dfc8;
+  --bark: #8d6e63;
+  --ink: #2f3a3d;
+  --muted: #6b7280;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  font-family: 'Manrope', sans-serif;
+  color: var(--ink);
+}
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulseDot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.5); }
+  50% { box-shadow: 0 0 0 8px rgba(76, 175, 80, 0); }
+}
+
+@keyframes leafSway {
+  0%, 100% { transform: rotate(-45deg); }
+  50% { transform: rotate(-38deg); }
+}
+
+@keyframes leafFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-16px) rotate(10deg); }
+}
+
+@keyframes coinPop {
+  0% { opacity: 0; transform: translateY(4px) scale(0.8); }
+  60% { opacity: 1; transform: translateY(-2px) scale(1.1); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c9bf9f;
+  border-radius: 8px;
+}
+
+/* Responsive: collapse two-column grids on small screens */
+@media (max-width: 900px) {
+  .as-grid-2,
+  .as-grid-3,
+  .as-hero {
+    grid-template-columns: 1fr !important;
+  }
+  .as-nav-links {
+    display: none !important;
+  }
+}
