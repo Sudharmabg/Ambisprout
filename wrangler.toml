@@ -11,4 +11,4 @@ pages_build_output_dir = "dist"
 # Replace the id with your namespace id after `npx wrangler kv namespace create CHAT_KV`
 [[kv_namespaces]]
 binding = "CHAT_KV"
-id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+id = "5e06763dc5624c128c56144ca939f537"
