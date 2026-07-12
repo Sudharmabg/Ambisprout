@@ -3,7 +3,7 @@ import { liveActivity, trendingTopics, communityPosts } from '../data.js';
 
 export default function Community() {
   return (
-    <Section id="community-section" outerStyle={{ background: '#F7F3E9', padding: '32px 56px 64px' }}>
+    <Section id="community-section" className="as-section-responsive" outerStyle={{ background: '#F7F3E9', padding: '32px 56px 64px' }}>
       <div style={{ maxWidth: 1300, margin: '0 auto' }}>
         <h2
           style={{

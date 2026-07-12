@@ -3,13 +3,91 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary SEO -->
+    <title>AmbiSprout — India's AI-Powered Sustainability Companion</title>
+    <meta
+      name="description"
+      content="AmbiSprout is India's AI-powered sustainability companion. Complete personalized eco missions, verify real impact with AI, earn Sprout Coins, and join a founding green community."
+    />
+    <meta name="keywords" content="sustainability app India, AI sustainability coach, carbon footprint tracker, eco missions, green community India, Sprout Coins, climate action" />
+    <meta name="author" content="AmbiSprout" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://www.ambisprout.com/" />
+    <meta name="theme-color" content="#1B4332" />
+
+    <!-- Open Graph (Facebook / LinkedIn / WhatsApp) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AmbiSprout" />
+    <meta property="og:title" content="AmbiSprout — India's AI-Powered Sustainability Companion" />
+    <meta
+      property="og:description"
+      content="Complete personalized eco missions, verify real impact with AI, earn Sprout Coins, and join India's founding green community."
+    />
+    <meta property="og:url" content="https://www.ambisprout.com/" />
+    <meta property="og:image" content="https://www.ambisprout.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AmbiSprout — India's AI-Powered Sustainability Companion" />
+    <meta
+      name="twitter:description"
+      content="Complete personalized eco missions, verify real impact with AI, earn Sprout Coins, and join India's founding green community."
+    />
+    <meta name="twitter:image" content="https://www.ambisprout.com/og-image.png" />
+
+    <!-- Icons -->
+    <link rel="icon" type="image/png" href="/src/assets/logo_small.png" />
+    <link rel="apple-touch-icon" href="/src/assets/logo_small.png" />
+
+    <!-- LCP image: discover before the JS bundle executes -->
+    <link rel="preload" as="image" href="/hero-illustration.jpg" fetchpriority="high" />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <title>AmbiSprout — India's AI-Powered Sustainability Companion</title>
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://www.ambisprout.com/#organization",
+            "name": "AmbiSprout",
+            "url": "https://www.ambisprout.com/",
+            "logo": "https://www.ambisprout.com/og-image.png",
+            "description": "India's AI-powered sustainability lifestyle platform.",
+            "foundingDate": "2026",
+            "areaServed": "IN"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.ambisprout.com/#website",
+            "url": "https://www.ambisprout.com/",
+            "name": "AmbiSprout",
+            "publisher": { "@id": "https://www.ambisprout.com/#organization" },
+            "inLanguage": "en-IN"
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "AmbiSprout",
+            "applicationCategory": "LifestyleApplication",
+            "operatingSystem": "Web",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+            "description": "AI-powered sustainability companion with personalized eco missions, AI verification, and community challenges."
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

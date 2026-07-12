@@ -1,60 +1,111 @@
 import Section from './Section.jsx';
+import Reveal from './Reveal.jsx';
 import Hoverable from './Hoverable.jsx';
+import FeatureIcon from './FeatureIcon.jsx';
+
+const microPoints = ['100% free', 'AI-verified impact', 'Made for India'];
 
 export default function FinalCTA() {
   return (
-    <Section outerStyle={{ background: '#F7F3E9', padding: '72px 56px', textAlign: 'center' }}>
-      <h2
-        style={{
-          fontFamily: "'Playfair Display', serif",
-          fontSize: 42,
-          color: '#1B4332',
-          fontWeight: 700,
-          margin: '0 0 16px',
-        }}
-      >
-        Ready to Build a Greener Tomorrow?
-      </h2>
-      <p style={{ color: '#6B7280', fontSize: 17, maxWidth: 520, margin: '0 auto 32px' }}>
-        Join AmbiSprout and let AI guide your sustainability journey—one meaningful action at a time.
-      </p>
-      <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
-        <Hoverable
-          as="button"
-          style={{
-            background: '#2E7D32',
-            color: '#fff',
-            border: 'none',
-            padding: '18px 40px',
-            borderRadius: 14,
-            fontSize: 17,
-            fontWeight: 700,
-            cursor: 'pointer',
-            fontFamily: 'inherit',
-            boxShadow: '0 12px 28px rgba(46,125,50,0.32)',
-          }}
-          hoverStyle={{ background: '#1B4332', transform: 'translateY(-2px)' }}
-        >
-          Start Your Green Journey
-        </Hoverable>
-        <Hoverable
-          as="button"
-          style={{
-            background: 'transparent',
-            color: '#1B4332',
-            border: '1.5px solid #1B4332',
-            padding: '18px 40px',
-            borderRadius: 14,
-            fontSize: 17,
-            fontWeight: 700,
-            cursor: 'pointer',
-            fontFamily: 'inherit',
-          }}
-          hoverStyle={{ background: '#1B4332', color: '#fff' }}
-        >
-          Explore the Community
-        </Hoverable>
-      </div>
+    <Section
+      animate={false}
+      className="as-section-responsive"
+      outerStyle={{ background: '#F7F3E9', padding: '48px 56px 80px' }}
+    >
+      <Reveal style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <div className="as-cta-panel">
+          {/* Ambient decoration */}
+          <span className="as-cta-glow as-cta-glow-1" aria-hidden="true" />
+          <span className="as-cta-glow as-cta-glow-2" aria-hidden="true" />
+          <span className="as-cta-leaf as-cta-leaf-1" aria-hidden="true">
+            <FeatureIcon name="sprout" size={34} />
+          </span>
+          <span className="as-cta-leaf as-cta-leaf-2" aria-hidden="true">
+            <FeatureIcon name="leaf" size={26} />
+          </span>
+          <span className="as-cta-leaf as-cta-leaf-3" aria-hidden="true">
+            <FeatureIcon name="leaf" size={20} />
+          </span>
+
+          <div className="as-cta-inner">
+            <div className="as-cta-eyebrow">
+              <span className="as-cta-eyebrow-icon">
+                <FeatureIcon name="sprout" size={14} />
+              </span>
+              THE JOURNEY STARTS HERE
+            </div>
+
+            <h2 className="as-cta-title as-cta-heading">
+              Every Big Change Starts
+              <br />
+              With a <em>Small Sprout.</em>
+            </h2>
+
+            <p className="as-cta-sub">
+              Join the founding community, meet your AI companion, and turn everyday
+              habits into verified impact — your first mission is waiting.
+            </p>
+
+            <div className="as-cta-buttons as-cta-actions">
+              <Hoverable
+                as="button"
+                style={{
+                  background: '#4CAF50',
+                  color: '#fff',
+                  border: 'none',
+                  padding: '17px 38px',
+                  borderRadius: 999,
+                  fontSize: 16,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                  boxShadow: '0 14px 32px rgba(76,175,80,0.35)',
+                  transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
+                }}
+                hoverStyle={{ background: '#3d9c41', transform: 'translateY(-3px)' }}
+              >
+                Start Your Green Journey →
+              </Hoverable>
+              <Hoverable
+                as="a"
+                href="#community-section"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'transparent',
+                  color: '#fff',
+                  border: '1.5px solid rgba(255,255,255,0.4)',
+                  padding: '17px 38px',
+                  borderRadius: 999,
+                  fontSize: 16,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                  textDecoration: 'none',
+                  transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
+                }}
+                hoverStyle={{
+                  background: 'rgba(255,255,255,0.1)',
+                  borderColor: '#fff',
+                  transform: 'translateY(-3px)',
+                }}
+              >
+                Explore the Community
+              </Hoverable>
+            </div>
+
+            <div className="as-cta-micro">
+              {microPoints.map((m, i) => (
+                <span key={m} className="as-cta-micro-item">
+                  {i > 0 && <span className="as-cta-micro-dot" aria-hidden="true" />}
+                  {m}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Reveal>
     </Section>
   );
 }

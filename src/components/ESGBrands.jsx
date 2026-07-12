@@ -24,7 +24,7 @@ export default function ESGBrands() {
   };
 
   return (
-    <Section id="brands-section" outerStyle={{ padding: '64px 56px', maxWidth: 1400, margin: '0 auto' }}>
+    <Section id="brands-section" className="as-section-responsive" outerStyle={{ padding: '64px 56px', maxWidth: 1400, margin: '0 auto' }}>
       <div
         style={{
           display: 'flex',

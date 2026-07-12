@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Section from './Section.jsx';
+import Reveal from './Reveal.jsx';
 import { challengesData } from '../data.js';
 
 const illustrations = [
@@ -124,12 +125,86 @@ function ChallengeCard({ challenge, illustration }) {
 }
 
 export default function Challenges() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(3);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 640) {
+        setItemsPerPage(1);
+      } else if (window.innerWidth <= 1024) {
+        setItemsPerPage(2);
+      } else {
+        setItemsPerPage(3);
+      }
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Correct index if out of bounds on resize
+  useEffect(() => {
+    const maxIndex = challengesData.length - itemsPerPage;
+    if (currentIndex > maxIndex) {
+      setCurrentIndex(Math.max(0, maxIndex));
+    }
+  }, [itemsPerPage, currentIndex]);
+
+  const maxIndex = challengesData.length - itemsPerPage;
+
+  const nextSlide = () => {
+    if (currentIndex < maxIndex) {
+      setCurrentIndex((prev) => prev + 1);
+    }
+  };
+
+  const prevSlide = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex((prev) => prev - 1);
+    }
+  };
+
+  // Touch handlers for swipe
+  const handleTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    }
+    if (isRightSwipe) {
+      prevSlide();
+    }
+  };
+
+  // Generate pagination dots (only if we have more items than can fit on one page)
+  const showDots = maxIndex > 0;
+  const dotsCount = maxIndex + 1;
+
   return (
     <Section
       id="challenges-section"
+      animate={false}
+      className="as-section-responsive"
       outerStyle={{ maxWidth: 1300, margin: '0 auto', padding: '56px 56px 32px' }}
     >
-      <h2
+      <Reveal
+        as="h2"
         style={{
           fontFamily: "'Playfair Display', serif",
           fontSize: 38,
@@ -140,15 +215,75 @@ export default function Challenges() {
         }}
       >
         Active Challenges
-      </h2>
-      <div
-        className="as-grid-3"
-        style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24 }}
-      >
-        {challengesData.map((c, i) => (
-          <ChallengeCard key={c.id} challenge={c} illustration={illustrations[i]} />
-        ))}
+      </Reveal>
+
+      <div className="as-carousel-wrapper">
+        <div 
+          className="as-carousel-viewport"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div
+            className="as-carousel-track"
+            style={{
+              transform: `translateX(calc(-${currentIndex} * (100% + 24px) / ${itemsPerPage}))`,
+            }}
+          >
+            {challengesData.map((c, i) => (
+              <div
+                key={c.id}
+                className="as-carousel-card-wrapper"
+                style={{
+                  width: `calc((100% - ${itemsPerPage - 1} * 24px) / ${itemsPerPage})`,
+                }}
+              >
+                <Reveal delay={i * 0.08}>
+                  <ChallengeCard challenge={c} illustration={illustrations[i]} />
+                </Reveal>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Prev Button */}
+        <button
+          className="as-carousel-btn prev-btn"
+          onClick={prevSlide}
+          disabled={currentIndex === 0}
+          aria-label="Previous challenge"
+        >
+          <svg viewBox="0 0 24 24">
+            <path d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        {/* Next Button */}
+        <button
+          className="as-carousel-btn next-btn"
+          onClick={nextSlide}
+          disabled={currentIndex === maxIndex}
+          aria-label="Next challenge"
+        >
+          <svg viewBox="0 0 24 24">
+            <path d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
       </div>
+
+      {/* Pagination Dots */}
+      {showDots && (
+        <div className="as-carousel-dots">
+          {Array.from({ length: dotsCount }).map((_, i) => (
+            <button
+              key={i}
+              className={`as-carousel-dot ${currentIndex === i ? 'active' : ''}`}
+              onClick={() => setCurrentIndex(i)}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
     </Section>
   );
 }

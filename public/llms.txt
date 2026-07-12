@@ -1,0 +1,26 @@
+# AmbiSprout
+
+> AmbiSprout is India's AI-powered sustainability companion. Users complete personalized eco missions created by Sprout AI, verify real-world impact through photos, receipts, and activity data, earn Sprout Coins, and join a founding community building greener habits across Indian cities.
+
+AmbiSprout is an early-stage product built in India for students and young professionals. Impact estimates follow published emission factors; missions are verified by AI rather than self-reported, and the platform is free for individual users.
+
+## Main Sections
+
+- [Home](https://www.ambisprout.com/): Landing page introducing Sprout AI, missions, and the founding community
+- [Features](https://www.ambisprout.com/#ai-section): AI Sustainability Coach, Carbon Footprint Calculator, AI Image Verification, and Receipt Analysis
+- [Your Green Journey](https://www.ambisprout.com/#journey-section): Five-step path from meeting Sprout to inspiring the community
+- [Active Challenges](https://www.ambisprout.com/#challenges-section): City-based sustainability challenges across Bengaluru, Delhi, Mumbai, Pune, and Chennai
+- [Community](https://www.ambisprout.com/#community-section): Live activity, trending discussions, and member achievements
+
+## Key Facts
+
+- Product: AI sustainability companion (web application)
+- Region: India
+- Audience: Students and young professionals
+- Pricing: Free for individual users
+- Verification: Missions verified via photos, receipts, or activity data
+- Rewards: Sprout Coins, funded by ESG-friendly brand partners
+
+## Optional
+
+- [Contact](https://www.ambisprout.com/#contact): Get in touch with the AmbiSprout team

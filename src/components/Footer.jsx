@@ -1,3 +1,4 @@
+import logoImg from '../assets/logo_small.png';
 import Hoverable from './Hoverable.jsx';
 
 const quickLinks = [
@@ -32,9 +33,9 @@ function LinkColumn({ title, links }) {
   );
 }
 
-export default function Footer() {
+export default function Footer({ onLogoClick }) {
   return (
-    <div style={{ background: '#1B4332', color: '#E8DFC8', padding: '64px 56px 32px' }}>
+    <footer className="as-section-responsive" style={{ background: '#1B4332', color: '#E8DFC8', padding: '64px 56px 32px' }}>
       <div
         className="as-grid-4"
         style={{
@@ -49,15 +50,34 @@ export default function Footer() {
       >
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-            <div
+            <button
+              type="button"
+              onClick={onLogoClick}
+              aria-label="View AmbiSprout logo fullscreen"
               style={{
-                width: 26,
-                height: 26,
-                background: '#4CAF50',
-                borderRadius: '0 50% 50% 50%',
-                transform: 'rotate(-45deg)',
+                background: 'transparent',
+                border: 'none',
+                padding: 0,
+                cursor: 'pointer',
+                lineHeight: 0,
               }}
-            />
+            >
+              <img
+                src={logoImg}
+                alt="AmbiSprout logo"
+                width="38"
+                height="38"
+                loading="lazy"
+                decoding="async"
+                style={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  border: '2px solid #4CAF50',
+                }}
+              />
+            </button>
             <span
               style={{
                 fontFamily: "'Playfair Display', serif",
@@ -83,7 +103,9 @@ export default function Footer() {
           </div>
           <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
             <input
+              type="email"
               placeholder="Your email"
+              aria-label="Email address for updates"
               style={{
                 flex: 1,
                 minWidth: 0,
@@ -133,6 +155,6 @@ export default function Footer() {
       <div style={{ textAlign: 'center', fontSize: 13, color: '#8fb8a4', paddingTop: 24 }}>
         © 2026 AmbiSprout. All rights reserved.
       </div>
-    </div>
+    </footer>
   );
 }

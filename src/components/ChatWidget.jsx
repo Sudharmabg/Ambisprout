@@ -55,33 +55,13 @@ export default function ChatWidget({ open, onOpen, onClose }) {
         };
 
   if (!open) {
-    return (
-      <button
-        onClick={onOpen}
-        style={{
-          position: 'fixed',
-          bottom: 24,
-          right: 24,
-          width: 58,
-          height: 58,
-          borderRadius: '50%',
-          background: '#2E7D32',
-          color: '#fff',
-          border: 'none',
-          fontSize: 22,
-          cursor: 'pointer',
-          boxShadow: '0 12px 28px rgba(46,125,50,0.4)',
-          zIndex: 100,
-          animation: 'pulseDot 2.5s infinite',
-        }}
-      >
-        💬
-      </button>
-    );
+    return null;
   }
 
   return (
     <div
+      role="dialog"
+      aria-label="AI Sustainability Coach chat"
       style={{
         position: 'fixed',
         bottom: 24,
@@ -111,6 +91,7 @@ export default function ChatWidget({ open, onOpen, onClose }) {
         <div style={{ fontWeight: 700, fontSize: 14 }}>🌱 AI Sustainability Coach</div>
         <button
           onClick={onClose}
+          aria-label="Close chat"
           style={{
             background: 'transparent',
             border: 'none',
@@ -125,6 +106,7 @@ export default function ChatWidget({ open, onOpen, onClose }) {
 
       <div
         ref={bodyRef}
+        aria-live="polite"
         style={{
           padding: 14,
           display: 'flex',
@@ -155,6 +137,7 @@ export default function ChatWidget({ open, onOpen, onClose }) {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && send()}
           placeholder="Ask about sustainability..."
+          aria-label="Ask the AI coach a question"
           style={{
             flex: 1,
             minWidth: 0,
