@@ -1,0 +1,14 @@
+# Cloudflare Pages configuration for AmbiSprout.
+# The chatbot function lives in functions/api/chat.js and needs:
+#   - secret  OPENAI_API_KEY   (set in dashboard: Pages > Settings > Variables & secrets)
+#   - var     GOOGLE_CLIENT_ID (public OAuth client id, same value as VITE_GOOGLE_CLIENT_ID)
+#   - KV      CHAT_KV          (create a namespace, then bind it below / in dashboard)
+
+name = "ambisprout"
+compatibility_date = "2026-07-01"
+pages_build_output_dir = "dist"
+
+# Replace the id with your namespace id after `npx wrangler kv namespace create CHAT_KV`
+[[kv_namespaces]]
+binding = "CHAT_KV"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"

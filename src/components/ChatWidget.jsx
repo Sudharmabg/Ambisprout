@@ -1,170 +1,276 @@
-import { useState, useRef, useEffect } from 'react';
-import { chatReplies } from '../data.js';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import sproutImg from '../assets/sprout_ai.jpeg';
+import { chatReplies, chatSuggestions } from '../data.js';
+import { sendChat } from '../lib/chatClient.js';
+import {
+  getUser,
+  isAuthConfigured,
+  onAuthChange,
+  renderSignInButton,
+  signOut,
+} from '../lib/googleAuth.js';
 
-const initialMessages = [
-  {
-    role: 'ai',
-    text: "Hi! I'm your AI sustainability coach. Ask me anything about eco-friendly habits 🌱",
-  },
-];
+const GUEST_GREETING =
+  "Hi! I'm Sprout, your AI sustainability coach 🌱 Ask me anything about eco-friendly living or AmbiSprout — your first 5 answers today are free.";
 
-export default function ChatWidget({ open, onOpen, onClose }) {
-  const [messages, setMessages] = useState(initialMessages);
-  const [input, setInput] = useState('');
-  const bodyRef = useRef(null);
+const memberGreeting = (name) =>
+  `Welcome back${name ? `, ${name}` : ''}! 🌱 What shall we make greener today?`;
 
-  useEffect(() => {
-    if (bodyRef.current) {
-      bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
-    }
-  }, [messages, open]);
+function historyKey(user) {
+  return user ? `as_chat_hist_${user.sub}` : 'as_chat_hist_guest';
+}
 
-  const send = () => {
-    const text = input.trim();
-    if (!text) return;
-    setMessages((prev) => [...prev, { role: 'user', text }]);
-    setInput('');
-    setTimeout(() => {
-      const reply = chatReplies[Math.floor(Math.random() * chatReplies.length)];
-      setMessages((prev) => [...prev, { role: 'ai', text: reply }]);
-    }, 700);
-  };
-
-  const bubbleStyle = (role) =>
-    role === 'ai'
-      ? {
-          background: '#fff',
-          color: '#2F3A3D',
-          borderRadius: 14,
-          padding: '10px 14px',
-          fontSize: 13,
-          lineHeight: 1.45,
-          maxWidth: '85%',
-          alignSelf: 'flex-start',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-        }
-      : {
-          background: '#2E7D32',
-          color: '#fff',
-          borderRadius: 14,
-          padding: '10px 14px',
-          fontSize: 13,
-          lineHeight: 1.45,
-          maxWidth: '85%',
-          alignSelf: 'flex-end',
-        };
-
-  if (!open) {
-    return null;
+function loadHistory(user) {
+  try {
+    const stored = JSON.parse(localStorage.getItem(historyKey(user)));
+    if (Array.isArray(stored) && stored.length > 0) return stored;
+  } catch {
+    /* fall through to greeting */
   }
+  return [
+    { role: 'assistant', content: user ? memberGreeting(user.firstName) : GUEST_GREETING },
+  ];
+}
+
+export default function ChatWidget({ open, onClose }) {
+  const [user, setUser] = useState(() => getUser());
+  const [messages, setMessages] = useState(() => loadHistory(getUser()));
+  const [input, setInput] = useState('');
+  const [status, setStatus] = useState('idle'); // idle | thinking | streaming
+  const [authPrompt, setAuthPrompt] = useState(null); // null | 'guest_limit' | 'member_limit' | 'manual'
+  const [remaining, setRemaining] = useState(null);
+
+  const bodyRef = useRef(null);
+  const signInRef = useRef(null);
+  const pendingRetryRef = useRef(null);
+  const busy = status !== 'idle';
+
+  /* Auth subscription: on sign-in, swap history + retry a limit-blocked message. */
+  useEffect(
+    () =>
+      onAuthChange((nextUser) => {
+        setUser(nextUser);
+        setAuthPrompt(null);
+        if (nextUser) {
+          const retry = pendingRetryRef.current;
+          pendingRetryRef.current = null;
+          if (retry) {
+            setMessages(retry);
+            void runSend(retry, nextUser);
+          } else {
+            setMessages(loadHistory(nextUser));
+          }
+        }
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  /* Persist history per user. */
+  useEffect(() => {
+    try {
+      localStorage.setItem(historyKey(user), JSON.stringify(messages.slice(-40)));
+    } catch {
+      /* best-effort */
+    }
+  }, [messages, user]);
+
+  /* Auto-scroll. */
+  useEffect(() => {
+    if (bodyRef.current) bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
+  }, [messages, status, authPrompt, open]);
+
+  /* Render the Google button whenever the auth prompt is visible. */
+  useEffect(() => {
+    if (authPrompt && signInRef.current && isAuthConfigured()) {
+      renderSignInButton(signInRef.current).catch(() => {});
+    }
+  }, [authPrompt]);
+
+  const runSend = useCallback(async (history, activeUser) => {
+    setStatus('thinking');
+    let streamed = false;
+
+    const result = await sendChat(history, activeUser, {
+      onDelta: (chunk) => {
+        setStatus('streaming');
+        setMessages((prev) => {
+          if (!streamed) {
+            streamed = true;
+            return [...prev, { role: 'assistant', content: chunk }];
+          }
+          const next = [...prev];
+          next[next.length - 1] = {
+            role: 'assistant',
+            content: next[next.length - 1].content + chunk,
+          };
+          return next;
+        });
+      },
+    });
+
+    if (typeof result.remaining === 'number' && result.remaining >= 0) {
+      setRemaining(result.remaining);
+    }
+
+    switch (result.type) {
+      case 'faq':
+      case 'cache':
+        // Brief pause so instant answers still feel conversational.
+        await new Promise((r) => setTimeout(r, 450));
+        setMessages((prev) => [...prev, { role: 'assistant', content: result.text }]);
+        break;
+      case 'stream':
+        if (!streamed) {
+          setMessages((prev) => [...prev, { role: 'assistant', content: result.text }]);
+        }
+        break;
+      case 'limit':
+        if (result.code === 'guest_limit') {
+          pendingRetryRef.current = history;
+          setAuthPrompt('guest_limit');
+        } else {
+          setAuthPrompt('member_limit');
+        }
+        break;
+      case 'error':
+      default:
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: `${chatReplies[Math.floor(Math.random() * chatReplies.length)]}\n\n(I'm having trouble reaching my AI brain right now — try again in a moment.)`,
+          },
+        ]);
+        break;
+    }
+    setStatus('idle');
+  }, []);
+
+  const send = useCallback(
+    (rawText) => {
+      const text = (rawText ?? input).trim();
+      if (!text || busy) return;
+      setInput('');
+      setAuthPrompt(null);
+      const history = [...messages, { role: 'user', content: text }];
+      setMessages(history);
+      void runSend(history, user);
+    },
+    [input, busy, messages, user, runSend]
+  );
+
+  if (!open) return null;
+
+  const showChips = messages.length <= 1 && !busy;
 
   return (
-    <div
-      role="dialog"
-      aria-label="AI Sustainability Coach chat"
-      style={{
-        position: 'fixed',
-        bottom: 24,
-        right: 24,
-        width: 340,
-        maxWidth: 'calc(100vw - 48px)',
-        background: '#fff',
-        borderRadius: 20,
-        boxShadow: '0 20px 50px rgba(27,67,50,0.28)',
-        zIndex: 100,
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        maxHeight: 460,
-      }}
-    >
-      <div
-        style={{
-          background: '#1B4332',
-          color: '#fff',
-          padding: '16px 18px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <div style={{ fontWeight: 700, fontSize: 14 }}>🌱 AI Sustainability Coach</div>
-        <button
-          onClick={onClose}
-          aria-label="Close chat"
-          style={{
-            background: 'transparent',
-            border: 'none',
-            color: '#fff',
-            fontSize: 16,
-            cursor: 'pointer',
-          }}
-        >
-          ✕
-        </button>
+    <div className="cw-panel" role="dialog" aria-label="Sprout AI sustainability coach chat">
+      {/* Header */}
+      <div className="cw-head">
+        <span className="cw-avatar-wrap">
+          <img src={sproutImg} alt="" width="38" height="38" className="cw-avatar" />
+          <span className="cw-online" />
+        </span>
+        <span className="cw-title">
+          <b>Sprout AI</b>
+          <small>{busy ? 'typing…' : 'Online'}</small>
+        </span>
+        <span className="cw-head-actions">
+          {user ? (
+            <button
+              type="button"
+              className="cw-signout"
+              onClick={signOut}
+              title={`Signed in as ${user.email}. Click to sign out.`}
+            >
+              {user.picture ? (
+                <img src={user.picture} alt="" width="24" height="24" referrerPolicy="no-referrer" />
+              ) : (
+                user.firstName || 'Account'
+              )}
+            </button>
+          ) : (
+            <button type="button" className="cw-signin-link" onClick={() => setAuthPrompt('manual')}>
+              Sign in
+            </button>
+          )}
+          <button type="button" className="cw-close" onClick={onClose} aria-label="Close chat">
+            ✕
+          </button>
+        </span>
       </div>
 
-      <div
-        ref={bodyRef}
-        aria-live="polite"
-        style={{
-          padding: 14,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 10,
-          overflowY: 'auto',
-          flex: 1,
-          background: '#F7F3E9',
-        }}
-      >
+      {/* Messages */}
+      <div ref={bodyRef} className="cw-body" aria-live="polite">
         {messages.map((m, i) => (
-          <div key={i} style={bubbleStyle(m.role)}>
-            {m.text}
+          <div key={i} className={m.role === 'user' ? 'cw-msg-user' : 'cw-msg-ai'}>
+            {m.content}
           </div>
         ))}
+
+        {status === 'thinking' && (
+          <div className="cw-typing" aria-label="Sprout is typing">
+            <span />
+            <span />
+            <span />
+          </div>
+        )}
+
+        {authPrompt && (
+          <div className="cw-auth">
+            {authPrompt === 'member_limit' ? (
+              <p>
+                You've used all 25 answers for today — impressive dedication! 🌿 Come back
+                tomorrow for more.
+              </p>
+            ) : (
+              <p>
+                {authPrompt === 'guest_limit'
+                  ? "You've used your 5 free answers for today 🌱 Sign in with Google to keep chatting — members get 25 answers a day, free."
+                  : 'Sign in with Google to get 25 answers a day and pick up your chats where you left off.'}
+              </p>
+            )}
+            {authPrompt !== 'member_limit' &&
+              (isAuthConfigured() ? (
+                <div ref={signInRef} className="cw-google-btn" />
+              ) : (
+                <p className="cw-auth-note">
+                  (Sign-in isn't configured yet — set VITE_GOOGLE_CLIENT_ID.)
+                </p>
+              ))}
+          </div>
+        )}
+
+        {showChips && (
+          <div className="cw-chips">
+            {chatSuggestions.map((q) => (
+              <button key={q} type="button" className="cw-chip" onClick={() => send(q)}>
+                {q}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
-      <div
-        style={{
-          display: 'flex',
-          gap: 8,
-          padding: 12,
-          borderTop: '1px solid #E8DFC8',
-        }}
-      >
+      {/* Composer */}
+      <div className="cw-compose">
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && send()}
           placeholder="Ask about sustainability..."
-          aria-label="Ask the AI coach a question"
-          style={{
-            flex: 1,
-            minWidth: 0,
-            border: '1px solid #E8DFC8',
-            borderRadius: 10,
-            padding: '9px 12px',
-            fontSize: 13,
-            fontFamily: 'inherit',
-            outline: 'none',
-          }}
+          aria-label="Ask Sprout a question"
+          maxLength={600}
+          disabled={busy}
         />
-        <button
-          onClick={send}
-          style={{
-            background: '#2E7D32',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 10,
-            padding: '9px 14px',
-            fontWeight: 700,
-            cursor: 'pointer',
-            fontFamily: 'inherit',
-          }}
-        >
-          Send
+        <button type="button" className="cw-send" onClick={() => send()} disabled={busy} aria-label="Send message">
+          ➤
         </button>
       </div>
+      {!user && remaining !== null && remaining >= 0 && (
+        <div className="cw-quota">{remaining} free answer{remaining === 1 ? '' : 's'} left today</div>
+      )}
     </div>
   );
 }

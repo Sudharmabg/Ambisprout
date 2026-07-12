@@ -7,3 +7,10 @@ dist-ssr
 *.md
 .skills
 .agents
+.claude
+
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+.dev.vars

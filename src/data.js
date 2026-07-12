@@ -235,3 +235,103 @@ export const chatReplies = [
   'Composting kitchen waste can cut your household footprint significantly. I can walk you through it!',
   "You're doing great — 8.4kg CO₂ saved this month already. Keep the streak going! 🍃",
 ];
+
+// Suggested prompts shown as chips in the chat widget.
+export const chatSuggestions = [
+  'What is AmbiSprout?',
+  'How do Sprout Coins work?',
+  'Give me an eco mission for today',
+  'Is AmbiSprout free?',
+];
+
+/**
+ * Local FAQ bank — layer 1 of the chatbot. Curated answers served instantly
+ * with zero API cost. `anchors` are keywords that strongly identify the
+ * question; multi-word `keywords` are matched as phrases.
+ */
+export const faqBank = [
+  {
+    id: 'what-is',
+    keywords: ['ambisprout', 'app', 'platform', 'this', 'about ambisprout', 'what is ambisprout'],
+    anchors: ['ambisprout'],
+    answer:
+      "AmbiSprout is India's AI-powered sustainability companion 🌱 You complete personalized eco missions (like taking the metro or carrying a reusable bottle), verify them with photos or receipts, earn Sprout Coins, and join a founding community building greener habits across Indian cities.",
+  },
+  {
+    id: 'free',
+    keywords: ['free', 'cost', 'price', 'pay', 'subscription', 'charges', 'is ambisprout free'],
+    anchors: ['free', 'cost', 'price', 'subscription'],
+    answer:
+      'Yes — AmbiSprout is 100% free for individual users. Rewards are funded by ESG-friendly brand partners, never your wallet.',
+  },
+  {
+    id: 'coins',
+    keywords: ['sprout coins', 'coins', 'coin', 'rewards', 'redeem', 'earn'],
+    anchors: ['coins', 'coin'],
+    answer:
+      'Sprout Coins are rewards you earn for every verified green action — completing missions, joining challenges, keeping streaks. You can redeem them with our ESG-friendly brand partners. Every coin represents a real, AI-verified eco action.',
+  },
+  {
+    id: 'verification',
+    keywords: ['verify', 'verification', 'photo', 'proof', 'receipt', 'how missions verified'],
+    anchors: ['verify', 'verification', 'proof'],
+    answer:
+      'Missions are verified by AI — snap a photo of your action, scan a receipt, or connect activity data, and Sprout confirms it instantly. That means no self-reported greenwashing: every bit of impact on your dashboard is backed by evidence.',
+  },
+  {
+    id: 'missions',
+    keywords: ['mission', 'missions', 'daily', 'tasks', 'challenges', 'eco mission'],
+    anchors: ['mission', 'missions'],
+    answer:
+      "Every day Sprout creates simple missions matched to your lifestyle — carry a reusable bottle, use public transport, save electricity, reduce food waste. Complete them, verify with a photo or receipt, and earn Sprout Coins. Here's one for today: carry a reusable water bottle — it saves ~0.3 kg CO₂! 🌿",
+  },
+  {
+    id: 'cities',
+    keywords: ['city', 'cities', 'bengaluru', 'delhi', 'mumbai', 'pune', 'chennai', 'available', 'india'],
+    anchors: ['city', 'cities', 'bengaluru', 'delhi', 'mumbai', 'pune', 'chennai'],
+    answer:
+      "AmbiSprout is built for India 🇮🇳 — city challenges currently run across Bengaluru, Delhi, Mumbai, Pune, and Chennai, and the app itself works anywhere in India. We're growing city by city with our founding community.",
+  },
+  {
+    id: 'join',
+    keywords: ['join', 'sign up', 'signup', 'register', 'start', 'get started', 'how to join'],
+    anchors: ['join', 'signup', 'register'],
+    answer:
+      'Welcome aboard! 🌱 Hit "Start Your Green Journey" at the top of this page to join the founding community. You\'ll meet Sprout, get your first personalized missions, and start earning Sprout Coins from day one.',
+  },
+  {
+    id: 'audience',
+    keywords: ['students', 'professionals', 'who', 'for me', 'age', 'who is it for'],
+    anchors: ['students', 'professionals'],
+    answer:
+      "AmbiSprout is designed for students and young professionals across India — anyone who wants to live greener without it feeling like homework. Missions fit real life: hostel living, metro commutes, local markets.",
+  },
+  {
+    id: 'community',
+    keywords: ['community', 'leaderboard', 'friends', 'share', 'together'],
+    anchors: ['community', 'leaderboard'],
+    answer:
+      "The community is the heart of AmbiSprout — share wins, take on city challenges together, and climb leaderboards. We're at day one and building in the open: real actions from real members shape every feature we ship.",
+  },
+  {
+    id: 'brands',
+    keywords: ['brands', 'esg', 'partners', 'sponsor', 'companies'],
+    anchors: ['brands', 'esg', 'partners'],
+    answer:
+      'We partner with ESG-friendly brands — companies with genuine sustainability credentials — who fund the rewards you redeem Sprout Coins with. That keeps AmbiSprout free for you while supporting businesses doing right by the planet.',
+  },
+  {
+    id: 'greenwashing',
+    keywords: ['greenwashing', 'trust', 'real', 'legit', 'genuine', 'fake'],
+    anchors: ['greenwashing', 'trust', 'legit'],
+    answer:
+      'Fair question! No greenwashing is a core commitment: missions are AI-verified with photos, receipts, or activity data, and impact estimates follow published emission factors — not made-up math. We publish no inflated member counts either. What you see is real.',
+  },
+  {
+    id: 'carbon',
+    keywords: ['carbon', 'footprint', 'co2', 'impact', 'calculator', 'emissions'],
+    anchors: ['carbon', 'footprint', 'co2'],
+    answer:
+      'AmbiSprout tracks the real CO₂ impact of your actions — travel, food, and shopping — using published emission factors. Complete missions and watch your footprint shrink on your impact dashboard: CO₂ reduced, water conserved, waste avoided.',
+  },
+];

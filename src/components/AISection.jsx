@@ -203,6 +203,14 @@ export default function AISection({ onOpenChat }) {
     if (started) play(active);
   }, [started, active, play]);
 
+  useEffect(() => {
+    if (!started) return;
+    const interval = setInterval(() => {
+      setActive((prev) => (prev + 1) % aiScenarios.length);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [started, active]);
+
   /* Invalidate pending timers on unmount. */
   useEffect(() => () => { runIdRef.current += 1; }, []);
 

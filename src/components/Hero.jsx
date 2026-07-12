@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Hoverable from './Hoverable.jsx';
+import { getUser, onAuthChange } from '../lib/googleAuth.js';
 
 /* Served from public/ so index.html can preload it (LCP optimization). */
 const HERO_IMAGE = '/hero-illustration.jpg';
@@ -42,8 +43,15 @@ const labelStyle = {
   color: '#6B7280',
 };
 
-export default function Hero({ onOpenChat }) {
+export default function Hero({ onOpenChat, onOpenSignIn }) {
   const [imgOk, setImgOk] = useState(true);
+  const [user, setUser] = useState(() => getUser());
+
+  useEffect(() => {
+    return onAuthChange((nextUser) => {
+      setUser(nextUser);
+    });
+  }, []);
 
   return (
     <div
@@ -141,28 +149,55 @@ export default function Hero({ onOpenChat }) {
             animationDelay: '0.5s',
           }}
         >
-          <Hoverable
-            as="button"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: 'linear-gradient(135deg,#2E7D32,#1f6a29)',
-              color: '#fff',
-              border: 'none',
-              padding: '12px 24px',
-              borderRadius: 12,
-              fontSize: 14,
-              fontWeight: 700,
-              cursor: 'pointer',
-              fontFamily: 'inherit',
-              boxShadow: '0 8px 20px rgba(46,125,50,0.24)',
-              transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
-            }}
-            hoverStyle={{ transform: 'translateY(-4px)', boxShadow: '0 12px 24px rgba(46,125,50,0.3)' }}
-          >
-            Start Your Green Journey
-          </Hoverable>
+          {user ? (
+            <Hoverable
+              as="button"
+              onClick={() => onOpenChat(false)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'linear-gradient(135deg,#2E7D32,#1f6a29)',
+                color: '#fff',
+                border: 'none',
+                padding: '12px 24px',
+                borderRadius: 12,
+                fontSize: 14,
+                fontWeight: 700,
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                boxShadow: '0 8px 20px rgba(46,125,50,0.24)',
+                transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
+              }}
+              hoverStyle={{ transform: 'translateY(-4px)', boxShadow: '0 12px 24px rgba(46,125,50,0.3)' }}
+            >
+              Hi, {user.firstName || 'there'}! Open Sprout 🌱
+            </Hoverable>
+          ) : (
+            <Hoverable
+              as="button"
+              onClick={onOpenSignIn}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'linear-gradient(135deg,#2E7D32,#1f6a29)',
+                color: '#fff',
+                border: 'none',
+                padding: '12px 24px',
+                borderRadius: 12,
+                fontSize: 14,
+                fontWeight: 700,
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                boxShadow: '0 8px 20px rgba(46,125,50,0.24)',
+                transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
+              }}
+              hoverStyle={{ transform: 'translateY(-4px)', boxShadow: '0 12px 24px rgba(46,125,50,0.3)' }}
+            >
+              Start Your Green Journey
+            </Hoverable>
+          )}
         </div>
 
       </div>
