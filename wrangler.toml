@@ -12,3 +12,8 @@ pages_build_output_dir = "dist"
 [[kv_namespaces]]
 binding = "CHAT_KV"
 id = "5e06763dc5624c128c56144ca939f537"
+
+[vars]
+VITE_GOOGLE_CLIENT_ID = "394828699459-6quvjih68iarg8c9gi8qpg04aibiiiac.apps.googleusercontent.com"
+GOOGLE_CLIENT_ID = "394828699459-6quvjih68iarg8c9gi8qpg04aibiiiac.apps.googleusercontent.com"
+
