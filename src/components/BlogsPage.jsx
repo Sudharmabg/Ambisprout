@@ -1,44 +1,25 @@
 import { useState } from 'react';
-import { ecoNewsCategories, initialEcoNewsData } from '../data.js';
-import AddNewsModal from './AddNewsModal.jsx';
-import NewsModal from './NewsModal.jsx';
+import { blogCategories, blogsData } from '../data/blogsData.js';
+import BlogModal from './BlogModal.jsx';
 import Hoverable from './Hoverable.jsx';
 
-export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney }) {
-  const [newsList, setNewsList] = useState(initialEcoNewsData);
+export default function BlogsPage({ onBackToHome, onStartJourney }) {
+  const [blogs] = useState(blogsData);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeNewsModal, setActiveNewsModal] = useState(null);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [userCoins, setUserCoins] = useState(4820);
-  const [toastMessage, setToastMessage] = useState('');
+  const [activeBlogModal, setActiveBlogModal] = useState(null);
 
-  const showToast = (msg) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(''), 3500);
-  };
-
-  const handleAddNewStory = (newArticle) => {
-    setNewsList((prev) => [newArticle, ...prev]);
-    showToast('✨ News of the day successfully published to Eco Pulse!');
-  };
-
-  const handleTakeAction = (article) => {
-    setUserCoins((prev) => prev + article.coinReward);
-    showToast(`🎉 +${article.coinReward} Sprout Coins earned! Mission added to your daily tracker.`);
-  };
-
-  const filteredNews = newsList.filter((item) => {
-    const matchesCat = selectedCategory === 'All' || item.category.toLowerCase() === selectedCategory.toLowerCase();
+  const filteredBlogs = blogs.filter((blog) => {
+    const matchesCat = selectedCategory === 'All' || blog.category.toLowerCase() === selectedCategory.toLowerCase();
     const matchesSearch =
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.source.toLowerCase().includes(searchQuery.toLowerCase());
+      blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      blog.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      blog.metaDescription.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCat && matchesSearch;
   });
 
-  const headlineStory = newsList.find((n) => n.isHeadline) || newsList[0];
-  const regularStories = filteredNews.filter((n) => n.id !== headlineStory?.id);
+  const featuredBlog = blogs.find((b) => b.isFeatured) || blogs[0];
+  const regularBlogs = filteredBlogs.filter((b) => b.id !== featuredBlog?.id);
 
   return (
     <div
@@ -49,32 +30,7 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
         paddingBottom: 80,
       }}
     >
-      {/* Toast Notification */}
-      {toastMessage && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 84,
-            right: 24,
-            background: '#1B4332',
-            color: '#fff',
-            padding: '14px 24px',
-            borderRadius: '16px',
-            boxShadow: '0 12px 36px rgba(27,67,50,0.3)',
-            zIndex: 1200,
-            fontSize: 14,
-            fontWeight: 700,
-            animation: 'fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 10,
-          }}
-        >
-          <span>{toastMessage}</span>
-        </div>
-      )}
-
-      {/* Top Header Navigation Bar for Eco Pulse */}
+      {/* Top Header Navigation Bar for Blogs */}
       <div
         style={{
           background: 'linear-gradient(135deg, #1B4332 0%, #16382a 100%)',
@@ -115,15 +71,7 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
               ← Back to Home
             </button>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <span
-                style={{
-                  width: 12,
-                  height: 12,
-                  borderRadius: '50%',
-                  background: '#4CAF50',
-                  boxShadow: '0 0 12px #4CAF50',
-                }}
-              />
+              <span style={{ fontSize: 24 }}>📚</span>
               <h1
                 style={{
                   fontFamily: "'Playfair Display', serif",
@@ -133,46 +81,20 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
                   fontWeight: 700,
                 }}
               >
-                Eco Pulse News
+                Eco Blogs & Guides
               </h1>
             </div>
             <p style={{ color: '#B9CDBE', margin: '6px 0 0', fontSize: 15 }}>
-              India's live sustainability news digest, climate breakthroughs & AI-verified missions.
+              In-depth guides, habit blueprints, and AI insights to make sustainable living simple.
             </p>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            {/* Coin counter hidden */}
-
-            {/* Put In News Button (hidden for now)
-            <button
-              onClick={() => setIsAddModalOpen(true)}
-              style={{
-                background: '#4CAF50',
-                color: '#fff',
-                border: 'none',
-                padding: '13px 26px',
-                borderRadius: 999,
-                fontWeight: 700,
-                fontSize: 14,
-                cursor: 'pointer',
-                boxShadow: '0 8px 20px rgba(76,175,80,0.3)',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 8,
-              }}
-            >
-              ➕ Put In News of the Day
-            </button>
-            */}
           </div>
         </div>
       </div>
 
-      {/* Main Content Area */}
+      {/* Main Content Container */}
       <div style={{ maxWidth: 1300, margin: '36px auto 0', padding: '0 24px' }}>
-        {/* Spotlight Story of the Day Hero Banner */}
-        {headlineStory && (
+        {/* Featured Read Hero Spotlight */}
+        {featuredBlog && (
           <div
             style={{
               background: '#FFFDF9',
@@ -189,8 +111,8 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
           >
             <div style={{ position: 'relative', height: '100%', width: '100%' }}>
               <img
-                src={headlineStory.imageUrl}
-                alt={headlineStory.title}
+                src={featuredBlog.imageUrl}
+                alt={featuredBlog.title}
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
               <span
@@ -208,7 +130,7 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
                   textTransform: 'uppercase',
                 }}
               >
-                🔥 News of the Day
+                🔥 Featured Read of the Day
               </span>
             </div>
 
@@ -224,29 +146,29 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
                     fontWeight: 700,
                   }}
                 >
-                  {headlineStory.category}
+                  {featuredBlog.category}
                 </span>
-                <span style={{ fontSize: 13, color: '#6B7280' }}>{headlineStory.source}</span>
-                <span style={{ fontSize: 13, color: '#6B7280' }}>• {headlineStory.timestamp}</span>
+                <span style={{ fontSize: 13, color: '#6B7280' }}>{featuredBlog.author}</span>
+                <span style={{ fontSize: 13, color: '#6B7280' }}>• {featuredBlog.readTime}</span>
               </div>
 
               <h2
                 style={{
                   fontFamily: "'Playfair Display', serif",
-                  fontSize: 28,
+                  fontSize: 26,
                   margin: '0 0 12px',
                   color: '#1B4332',
-                  lineHeight: 1.25,
+                  lineHeight: 1.3,
                 }}
               >
-                {headlineStory.title}
+                {featuredBlog.title}
               </h2>
 
               <p style={{ color: '#4B5563', fontSize: 15, margin: '0 0 20px', lineHeight: 1.6 }}>
-                {headlineStory.subtitle}
+                {featuredBlog.subtitle}
               </p>
 
-              {/* Quick AI Bullet Takeaway */}
+              {/* Sprout AI Key Takeaway preview */}
               <div
                 style={{
                   background: '#F4EFE2',
@@ -257,21 +179,21 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
                 }}
               >
                 <b style={{ color: '#1B4332', fontSize: 13, display: 'block', marginBottom: 4 }}>
-                  ⚡ Sprout AI Quick Takeaway:
+                  ⚡ Sprout AI Key Takeaway:
                 </b>
                 <span style={{ fontSize: 13, color: '#2F3A3D', lineHeight: 1.5 }}>
-                  {headlineStory.aiTakeaways?.[0] || headlineStory.summary.slice(0, 140) + '...'}
+                  {featuredBlog.aiTakeaways?.[0]}
                 </span>
               </div>
 
-              <div style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
+              <div>
                 <button
-                  onClick={() => setActiveNewsModal(headlineStory)}
+                  onClick={() => setActiveBlogModal(featuredBlog)}
                   style={{
                     background: '#2E7D32',
                     color: '#fff',
                     border: 'none',
-                    padding: '12px 26px',
+                    padding: '12px 28px',
                     borderRadius: 999,
                     fontWeight: 700,
                     fontSize: 14,
@@ -279,14 +201,14 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
                     boxShadow: '0 6px 18px rgba(46,125,50,0.25)',
                   }}
                 >
-                  Read Full Story →
+                  Read Full Article →
                 </button>
               </div>
             </div>
           </div>
         )}
 
-        {/* Category Filters & Search Controls Bar */}
+        {/* Category Filters & Search Bar */}
         <div
           style={{
             display: 'flex',
@@ -297,9 +219,9 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
             marginBottom: 28,
           }}
         >
-          {/* Category Chips */}
+          {/* Filter Chips */}
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
-            {ecoNewsCategories.map((cat) => {
+            {blogCategories.map((cat) => {
               const isActive = selectedCategory === cat;
               return (
                 <button
@@ -327,7 +249,7 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
           <div style={{ position: 'relative', width: 280 }}>
             <input
               type="text"
-              placeholder="Search green news..."
+              placeholder="Search eco guides & blogs..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
@@ -345,8 +267,8 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
           </div>
         </div>
 
-        {/* News Card Grid */}
-        {regularStories.length > 0 && (
+        {/* Blog Cards Grid */}
+        {regularBlogs.length > 0 && (
           <div
             style={{
               display: 'grid',
@@ -354,11 +276,11 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
               gap: 28,
             }}
           >
-            {regularStories.map((item) => (
+            {regularBlogs.map((blog) => (
               <Hoverable
-                key={item.id}
+                key={blog.id}
                 as="div"
-                onClick={() => setActiveNewsModal(item)}
+                onClick={() => setActiveBlogModal(blog)}
                 style={{
                   background: '#FFFDF9',
                   borderRadius: '20px',
@@ -372,10 +294,10 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
                 }}
                 hoverStyle={{ transform: 'translateY(-6px)', boxShadow: '0 16px 36px rgba(27,67,50,0.12)' }}
               >
-                <div style={{ position: 'relative', height: 190, width: '100%' }}>
+                <div style={{ position: 'relative', height: 200, width: '100%' }}>
                   <img
-                    src={item.imageUrl}
-                    alt={item.title}
+                    src={blog.imageUrl}
+                    alt={blog.title}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                   <span
@@ -392,14 +314,14 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
                       backdropFilter: 'blur(4px)',
                     }}
                   >
-                    {item.category}
+                    {blog.category}
                   </span>
                 </div>
 
-                <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                <div style={{ padding: '22px', display: 'flex', flexDirection: 'column', flex: 1 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#6B7280', marginBottom: 8 }}>
-                    <span>{item.source}</span>
-                    <span>{item.timestamp}</span>
+                    <span>{blog.author}</span>
+                    <span>{blog.readTime}</span>
                   </div>
 
                   <h3
@@ -412,11 +334,11 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
                       fontWeight: 700,
                     }}
                   >
-                    {item.title}
+                    {blog.title}
                   </h3>
 
-                  <p style={{ color: '#4B5563', fontSize: 13.5, lineHeight: 1.5, margin: '0 0 16px', flex: 1 }}>
-                    {item.subtitle || item.summary.slice(0, 110) + '...'}
+                  <p style={{ color: '#4B5563', fontSize: 13.5, lineHeight: 1.55, margin: '0 0 16px', flex: 1 }}>
+                    {blog.subtitle}
                   </p>
 
                   <div
@@ -429,10 +351,10 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
                       marginTop: 'auto',
                     }}
                   >
-                    <span style={{ fontSize: 12, fontWeight: 700, color: '#2E7D32', display: 'flex', alignItems: 'center', gap: 4 }}>
-                      Read Full Story →
+                    <span style={{ fontSize: 13, fontWeight: 700, color: '#2E7D32', display: 'flex', alignItems: 'center', gap: 4 }}>
+                      Read Article →
                     </span>
-                    <span style={{ fontSize: 12, color: '#8D6E63', fontWeight: 600 }}>{item.readTime}</span>
+                    <span style={{ fontSize: 12, color: '#8D6E63', fontWeight: 600 }}>{blog.date}</span>
                   </div>
                 </div>
               </Hoverable>
@@ -441,69 +363,11 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
         )}
       </div>
 
-      {/* Bottom CTA Banner */}
-      <div
-        style={{
-          maxWidth: 1300,
-          margin: '40px auto 0',
-          padding: '0 24px',
-        }}
-      >
-        <div
-          style={{
-            background: 'linear-gradient(135deg, #1B4332 0%, #2D6A4F 100%)',
-            color: '#fff',
-            borderRadius: '24px',
-            padding: '36px 32px',
-            textAlign: 'center',
-            boxShadow: '0 12px 32px rgba(27,67,50,0.15)',
-          }}
-        >
-          <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, margin: '0 0 10px', color: '#fff' }}>
-            Ready to Turn Insights into Action?
-          </h3>
-          <p style={{ color: '#B9CDBE', fontSize: 15, margin: '0 0 24px', maxWidth: 520, marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.6 }}>
-            Join AmbiSprout to track your daily green habits, complete AI missions, and see your environmental impact grow.
-          </p>
-          <button
-            onClick={() => {
-              if (onStartJourney) {
-                onStartJourney();
-              } else {
-                onBackToHome();
-                window.location.hash = '#journey-section';
-              }
-            }}
-            style={{
-              background: '#4CAF50',
-              color: '#fff',
-              border: 'none',
-              padding: '13px 32px',
-              borderRadius: 999,
-              fontSize: 15,
-              fontWeight: 700,
-              cursor: 'pointer',
-              boxShadow: '0 6px 20px rgba(76,175,80,0.3)',
-              transition: 'all 0.2s ease',
-            }}
-          >
-            Start Your Green Journey →
-          </button>
-        </div>
-      </div>
-
-      {/* Put In News Modal */}
-      <AddNewsModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onAddNews={handleAddNewStory}
-      />
-
-      {/* Story Reader Modal */}
-      <NewsModal
-        article={activeNewsModal}
-        onClose={() => setActiveNewsModal(null)}
-        onTakeAction={handleTakeAction}
+      {/* Full Reader Modal */}
+      <BlogModal
+        blog={activeBlogModal}
+        onClose={() => setActiveBlogModal(null)}
+        onStartJourney={onStartJourney}
       />
     </div>
   );

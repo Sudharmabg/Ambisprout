@@ -11,6 +11,7 @@ import FinalCTA from './components/FinalCTA.jsx';
 import Footer from './components/Footer.jsx';
 import ChatWidget from './components/ChatWidget.jsx';
 import EcoPulsePage from './components/EcoPulsePage.jsx';
+import BlogsPage from './components/BlogsPage.jsx';
 import logoImg from './assets/logo.png';
 import sproutImg from './assets/sprout_ai.jpeg';
 
@@ -19,7 +20,9 @@ export default function App() {
   const [logoFullscreen, setLogoFullscreen] = useState(false);
   const [showFloatingChat, setShowFloatingChat] = useState(false);
   const [currentView, setCurrentView] = useState(() => {
-    return window.location.hash === '#eco-pulse' ? 'eco-pulse' : 'home';
+    if (window.location.hash === '#eco-pulse') return 'eco-pulse';
+    if (window.location.hash === '#blogs-page' || window.location.hash === '#blogs') return 'blogs-page';
+    return 'home';
   });
 
   const openChat = () => setChatOpen(true);
@@ -29,7 +32,9 @@ export default function App() {
     setCurrentView(view);
     if (view === 'eco-pulse') {
       window.location.hash = '#eco-pulse';
-    } else if (window.location.hash === '#eco-pulse') {
+    } else if (view === 'blogs-page') {
+      window.location.hash = '#blogs-page';
+    } else {
       window.location.hash = '';
     }
     window.scrollTo(0, 0);
@@ -39,6 +44,9 @@ export default function App() {
     const handleHashChange = () => {
       if (window.location.hash === '#eco-pulse') {
         setCurrentView('eco-pulse');
+        window.scrollTo(0, 0);
+      } else if (window.location.hash === '#blogs-page' || window.location.hash === '#blogs') {
+        setCurrentView('blogs-page');
         window.scrollTo(0, 0);
       } else {
         setCurrentView('home');
@@ -99,6 +107,18 @@ export default function App() {
         <EcoPulsePage
           onBackToHome={() => navigateTo('home')}
           onOpenChat={openChat}
+          onStartJourney={() => {
+            navigateTo('home');
+            window.location.hash = '#journey-section';
+          }}
+        />
+      ) : currentView === 'blogs-page' ? (
+        <BlogsPage
+          onBackToHome={() => navigateTo('home')}
+          onStartJourney={() => {
+            navigateTo('home');
+            window.location.hash = '#journey-section';
+          }}
         />
       ) : (
         <main>

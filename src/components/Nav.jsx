@@ -7,7 +7,7 @@ const links = [
   { label: 'Community', href: '#community-section', view: 'home' },
   { label: 'Challenges', href: '#challenges-section', view: 'home' },
   { label: 'Green Pulse', href: '#eco-pulse', view: 'eco-pulse' },
-  { label: 'Blogs', href: '#blogs-section', view: 'home' },
+  { label: 'Blogs', href: '#blogs-page', view: 'blogs-page' },
 ];
 
 export default function Nav({ onLogoClick, onOpenChat, currentView, onNavigate }) {
@@ -18,7 +18,11 @@ export default function Nav({ onLogoClick, onOpenChat, currentView, onNavigate }
       e.preventDefault();
       window.location.hash = '#eco-pulse';
       if (onNavigate) onNavigate('eco-pulse');
-    } else if (currentView === 'eco-pulse' && link.view === 'home') {
+    } else if (link.view === 'blogs-page') {
+      e.preventDefault();
+      window.location.hash = '#blogs-page';
+      if (onNavigate) onNavigate('blogs-page');
+    } else if ((currentView === 'eco-pulse' || currentView === 'blogs-page') && link.view === 'home') {
       if (onNavigate) onNavigate('home');
     }
   };

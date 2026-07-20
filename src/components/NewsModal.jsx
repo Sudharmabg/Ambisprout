@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function NewsModal({ article, onClose, onTakeAction }) {
+export default function NewsModal({ article, onClose, onTakeAction, onStartJourney }) {
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [speechProgress, setSpeechProgress] = useState(0);
   const [actionClaimed, setActionClaimed] = useState(false);
@@ -68,7 +68,7 @@ export default function NewsModal({ article, onClose, onTakeAction }) {
         }}
       >
         {/* Banner Image */}
-        <div style={{ position: 'relative', width: '100%', height: 260, flexShrink: 0 }}>
+        <div style={{ position: 'relative', width: '100%', height: 200, flexShrink: 0 }}>
           <img
             src={article.imageUrl}
             alt={article.title}
@@ -220,45 +220,41 @@ export default function NewsModal({ article, onClose, onTakeAction }) {
             {article.summary}
           </p>
 
-          {/* Turn News Into Action CTA */}
+          {/* Bottom CTA Banner */}
           <div
             style={{
-              background: '#FFF8EC',
-              border: '1.5px dashed #E8DFC8',
-              borderRadius: '16px',
-              padding: '20px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 16,
-              flexWrap: 'wrap',
+              marginTop: 28,
+              background: 'linear-gradient(135deg, #1B4332 0%, #2D6A4F 100%)',
+              color: '#fff',
+              borderRadius: '20px',
+              padding: '24px 20px',
+              textAlign: 'center',
             }}
           >
-            <div>
-              <span style={{ fontSize: 12, fontWeight: 800, color: '#8D6E63', textTransform: 'uppercase' }}>
-                🎯 Related Micro-Mission
-              </span>
-              <p style={{ margin: '4px 0 0', fontWeight: 700, color: '#1B4332', fontSize: 15 }}>
-                {article.mission || 'Complete eco action based on this story'}
-              </p>
-            </div>
+            <h4 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, margin: '0 0 8px', color: '#fff' }}>
+              Ready to Turn Insights into Action?
+            </h4>
+            <p style={{ color: '#B9CDBE', fontSize: 13.5, margin: '0 0 16px', maxWidth: 440, marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.5 }}>
+              Join AmbiSprout to track your daily green habits, complete AI missions, and see your environmental impact grow.
+            </p>
             <button
-              onClick={handleClaim}
-              disabled={actionClaimed}
+              onClick={() => {
+                onClose();
+                if (onStartJourney) onStartJourney();
+              }}
               style={{
-                background: actionClaimed ? '#81C784' : '#2E7D32',
+                background: '#4CAF50',
                 color: '#fff',
                 border: 'none',
-                padding: '12px 24px',
-                borderRadius: '999px',
-                fontSize: 14,
+                padding: '10px 24px',
+                borderRadius: 999,
+                fontSize: 13.5,
                 fontWeight: 700,
-                cursor: actionClaimed ? 'default' : 'pointer',
-                boxShadow: actionClaimed ? 'none' : '0 6px 18px rgba(46,125,50,0.3)',
-                transition: 'all 0.2s ease',
+                cursor: 'pointer',
+                boxShadow: '0 6px 16px rgba(76,175,80,0.3)',
               }}
             >
-              {actionClaimed ? '✓ Mission Accepted!' : 'Accept Mission'}
+              Start Your Green Journey →
             </button>
           </div>
         </div>
