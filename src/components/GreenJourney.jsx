@@ -106,7 +106,8 @@ export default function GreenJourney() {
   }, []);
 
   return (
-    <section id="journey-section" className="aj-section as-section-responsive">
+    <section id="journey-section" data-id="green-journey" className="aj-section as-section-responsive">
+      <div id="green-journey" style={{ position: 'relative', top: -80, visibility: 'hidden' }} />
       <div className="aj-head">
         <h2 className="aj-title">
           <span className="aj-title-leaf" aria-hidden="true">

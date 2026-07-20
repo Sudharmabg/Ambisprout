@@ -16,6 +16,7 @@ export default function SignInModal({ open, onClose }) {
     return onAuthChange((user) => {
       if (user) {
         onClose();
+        window.location.hash = '#/dashboard';
       }
     });
   }, [open, onClose]);

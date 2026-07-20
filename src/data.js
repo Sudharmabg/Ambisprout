@@ -238,100 +238,116 @@ export const chatReplies = [
 
 // Suggested prompts shown as chips in the chat widget.
 export const chatSuggestions = [
+  'What is sustainability?',
+  'What is climate change?',
+  'What is a carbon footprint?',
+  'Why is biodiversity important?',
+  'What are the 3Rs of waste management?',
+  'Why is plastic pollution a problem?',
+  'How can individuals contribute?',
+  'What is the circular economy?',
+  'Why are trees important?',
+  'What are the UN SDGs?',
   'What is AmbiSprout?',
-  'How do Sprout Coins work?',
-  'Give me an eco mission for today',
-  'Is AmbiSprout free?',
+  'How does AmbiSprout help users?',
+  'What makes AmbiSprout different?',
+  'Who is AmbiSprout designed for?',
+  'What is the vision of AmbiSprout?',
 ];
 
 /**
  * Local FAQ bank — layer 1 of the chatbot. Curated answers served instantly
- * with zero API cost. `anchors` are keywords that strongly identify the
- * question; multi-word `keywords` are matched as phrases.
+ * with zero API cost.
  */
 export const faqBank = [
   {
-    id: 'what-is',
-    keywords: ['ambisprout', 'app', 'platform', 'this', 'about ambisprout', 'what is ambisprout'],
+    id: 'sustainability-definition',
+    keywords: ['sustainability', 'what is sustainability', 'sustainable', 'definition of sustainability', 'three pillars'],
+    anchors: ['sustainability', 'sustainable'],
+    answer: `Sustainability is the practice of meeting today's needs without compromising the ability of future generations to meet theirs. It involves making responsible choices that protect natural resources, reduce pollution, conserve biodiversity, and promote social and economic well-being.\n\nSustainability is built on three interconnected pillars:\n• Environmental Sustainability: Protecting ecosystems, reducing carbon emissions, conserving water, reducing waste, and preserving biodiversity.\n• Social Sustainability: Ensuring equality, health, education, fair wages, community development, and human rights.\n• Economic Sustainability: Supporting long-term economic growth while using resources responsibly and avoiding environmental degradation.\n\nSustainability is not about making perfect choices — it is about making better choices consistently 🌱`,
+  },
+  {
+    id: 'climate-change',
+    keywords: ['climate change', 'global warming', 'greenhouse gases', 'emissions', 'what is climate change'],
+    anchors: ['climate', 'warming'],
+    answer: `Climate change refers to long-term changes in Earth's average temperature and weather patterns. Today's rapid warming is primarily caused by human activities such as burning fossil fuels, deforestation, industrial production, and unsustainable agriculture.\n\nThese activities release greenhouse gases — including carbon dioxide (CO₂), methane (CH₄), and nitrous oxide (N₂O) — which trap heat in the atmosphere.\n\nKey effects include rising temperatures, frequent heatwaves, floods, droughts, melting glaciers, and loss of biodiversity. Addressing climate change requires both reducing emissions and adapting to changing conditions 🌍`,
+  },
+  {
+    id: 'carbon-footprint',
+    keywords: ['carbon footprint', 'footprint', 'co2e', 'emissions', 'what is a carbon footprint', 'calculate footprint'],
+    anchors: ['footprint', 'carbon'],
+    answer: `A carbon footprint measures the total amount of greenhouse gases produced directly and indirectly by an individual, product, organization, or activity. It is usually expressed in kilograms or tonnes of carbon dioxide equivalent (CO₂e).\n\nEveryday activities contribute to your footprint:\n• Driving petrol or diesel vehicles\n• Air travel & electricity consumption\n• Food choices & shopping habits\n• Waste generation\n\nReducing your carbon footprint can be achieved by using public transport, switching to renewable energy, reducing food waste, and choosing reusable items. Tracking your footprint helps identify where lifestyle changes have the greatest impact 👣`,
+  },
+  {
+    id: 'biodiversity',
+    keywords: ['biodiversity', 'why is biodiversity important', 'ecosystem', 'species', 'wildlife'],
+    anchors: ['biodiversity'],
+    answer: `Biodiversity refers to the variety of life on Earth, including plants, animals, fungi, microorganisms, and their ecosystems.\n\nHealthy biodiversity provides essential services:\n• Crop pollination & clean air and water\n• Fertile soil & climate regulation\n• Natural pest control & food security\n• Medical discoveries\n\nWhen biodiversity declines due to pollution or habitat loss, ecosystems become less resilient. Protecting biodiversity helps maintain the natural balance necessary for all life 🌿`,
+  },
+  {
+    id: '3rs-waste-management',
+    keywords: ['3rs', 'three rs', 'reduce reuse recycle', 'waste management', 'recycling', 'reuse'],
+    anchors: ['3rs', 'reduce', 'reuse', 'recycle'],
+    answer: `The 3Rs provide a practical framework for minimizing waste:\n\n1. Reduce: Avoid unnecessary purchases, choose minimal packaging, and consume efficiently.\n2. Reuse: Repair items, refill containers, donate usable goods, and use reusable bags/bottles.\n3. Recycle: Convert waste materials into new products and segregate recyclable waste properly.\n\nAmong these, REDUCING consumption has the greatest environmental benefit because it prevents waste from being created in the first place ♻️`,
+  },
+  {
+    id: 'plastic-pollution',
+    keywords: ['plastic pollution', 'single use plastic', 'microplastics', 'plastic problem', 'why is plastic pollution a problem'],
+    anchors: ['plastic', 'microplastics'],
+    answer: `Plastic pollution is a critical environmental challenge because most plastics do not naturally decompose. Instead, they break down into tiny microplastics that persist in soil, rivers, oceans, and even human bodies.\n\nPlastic pollution:\n• Harms marine life & enters food chains\n• Blocks urban waterways\n• Damages soil ecosystems\n• Releases greenhouse gases during production & disposal\n\nReducing single-use plastics and adopting reusable alternatives are essential steps forward 🥤`,
+  },
+  {
+    id: 'individual-contribution',
+    keywords: ['individuals', 'how to contribute', 'what can i do', 'how can individuals contribute', 'small actions'],
+    anchors: ['contribute', 'individual', 'actions'],
+    answer: `Individual actions drive meaningful collective change! Here is how you can contribute:\n\n• Conserve electricity & water\n• Walk, cycle, or use public transport\n• Reduce food waste & recycle correctly\n• Carry reusable bottles & bags\n• Support sustainable brands & plant native trees\n• Educate friends and make mindful purchasing decisions\n\nSustainable living is about building consistent habits rather than achieving perfection 🍃`,
+  },
+  {
+    id: 'circular-economy',
+    keywords: ['circular economy', 'what is the circular economy', 'linear economy', 'reuse materials'],
+    anchors: ['circular'],
+    answer: `A circular economy is an economic model designed to minimize waste by keeping products and materials in use for as long as possible.\n\nUnlike the traditional "take-make-dispose" model, a circular economy focuses on:\n• Designing durable, long-lasting products\n• Repairing instead of replacing\n• Reusing & refurbishing materials\n• Recycling valuable resources\n\nThis approach conserves resources, reduces landfill waste, and lowers overall carbon emissions 🔄`,
+  },
+  {
+    id: 'trees-importance',
+    keywords: ['trees', 'why are trees important', 'deforestation', 'forests', 'oxygen'],
+    anchors: ['trees', 'forests'],
+    answer: `Trees are fundamental to healthy ecosystems. They absorb carbon dioxide, release oxygen, regulate local temperatures, prevent soil erosion, improve water retention, and provide habitats for countless species.\n\nUrban trees also improve air quality, lower city temperatures through shade, and enhance physical and mental well-being 🌳`,
+  },
+  {
+    id: 'sdgs-un',
+    keywords: ['sdgs', 'sustainable development goals', 'united nations', 'un goals', '17 goals'],
+    anchors: ['sdgs', 'un'],
+    answer: `The Sustainable Development Goals (SDGs) are 17 global goals adopted by the United Nations in 2015 to create a more sustainable, equitable, and prosperous world by 2030.\n\nThey address key global issues including:\n• No Poverty & Zero Hunger\n• Quality Education & Gender Equality\n• Clean Water & Affordable Clean Energy\n• Sustainable Cities & Responsible Consumption\n• Climate Action & Life Below Water/Land 🇺🇳`,
+  },
+  {
+    id: 'ambisprout-what-is',
+    keywords: ['ambisprout', 'what is ambisprout', 'about ambisprout', 'platform'],
     anchors: ['ambisprout'],
-    answer:
-      "AmbiSprout is India's AI-powered sustainability companion 🌱 You complete personalized eco missions (like taking the metro or carrying a reusable bottle), verify them with photos or receipts, earn Sprout Coins, and join a founding community building greener habits across Indian cities.",
+    answer: `AmbiSprout is an AI-powered sustainability platform designed to help individuals build environmentally responsible habits through education, personalized guidance, and community participation.\n\nRather than simply providing information, AmbiSprout encourages users to take meaningful action by combining sustainability knowledge with engaging challenges, AI-driven recommendations, habit tracking, and gamification 🌱`,
   },
   {
-    id: 'free',
-    keywords: ['free', 'cost', 'price', 'pay', 'subscription', 'charges', 'is ambisprout free'],
-    anchors: ['free', 'cost', 'price', 'subscription'],
-    answer:
-      'Yes — AmbiSprout is 100% free for individual users. Rewards are funded by ESG-friendly brand partners, never your wallet.',
+    id: 'ambisprout-how-it-helps',
+    keywords: ['how ambisprout helps', 'help users', 'features of ambisprout', 'how does ambisprout help'],
+    anchors: ['helps', 'features'],
+    answer: `AmbiSprout supports users throughout their sustainability journey by combining awareness with action:\n\n• Learn sustainability concepts through an AI assistant\n• Discover practical ways to reduce environmental impact\n• Participate in sustainability challenges\n• Build long-term eco-friendly habits & track progress\n• Stay motivated through gamification, badges & Sprout Coins\n• Connect with eco-conscious communities & organizations 🎯`,
   },
   {
-    id: 'coins',
-    keywords: ['sprout coins', 'coins', 'coin', 'rewards', 'redeem', 'earn'],
-    anchors: ['coins', 'coin'],
-    answer:
-      'Sprout Coins are rewards you earn for every verified green action — completing missions, joining challenges, keeping streaks. You can redeem them with our ESG-friendly brand partners. Every coin represents a real, AI-verified eco action.',
+    id: 'ambisprout-differentiator',
+    keywords: ['different', 'what makes ambisprout different', 'unique', 'differentiator', 'other apps'],
+    anchors: ['different', 'unique'],
+    answer: `While many apps focus on a single feature like carbon tracking or recycling tips, AmbiSprout brings multiple capabilities together in one platform:\n\n• AI-powered sustainability guidance & RAG knowledge\n• Personalized habit-building through gamification\n• Community-driven environmental initiatives\n• Clear focus on measurable behavioral change\n\nAmbiSprout aims to create lasting impact by making green choices simple and rewarding every day ✨`,
   },
   {
-    id: 'verification',
-    keywords: ['verify', 'verification', 'photo', 'proof', 'receipt', 'how missions verified'],
-    anchors: ['verify', 'verification', 'proof'],
-    answer:
-      'Missions are verified by AI — snap a photo of your action, scan a receipt, or connect activity data, and Sprout confirms it instantly. That means no self-reported greenwashing: every bit of impact on your dashboard is backed by evidence.',
+    id: 'ambisprout-audience',
+    keywords: ['who is ambisprout for', 'target audience', 'gen z', 'millennials', 'institutions', 'designed for'],
+    anchors: ['audience', 'target', 'designed'],
+    answer: `AmbiSprout is designed for individuals who want to live more sustainably — particularly digital-first Gen Z and young millennials eager to make a positive impact.\n\nThe platform also serves educational institutions, businesses, CSR programs, NGOs, and community organizations seeking to engage people in measurable sustainability campaigns 👥`,
   },
   {
-    id: 'missions',
-    keywords: ['mission', 'missions', 'daily', 'tasks', 'challenges', 'eco mission'],
-    anchors: ['mission', 'missions'],
-    answer:
-      "Every day Sprout creates simple missions matched to your lifestyle — carry a reusable bottle, use public transport, save electricity, reduce food waste. Complete them, verify with a photo or receipt, and earn Sprout Coins. Here's one for today: carry a reusable water bottle — it saves ~0.3 kg CO₂! 🌿",
-  },
-  {
-    id: 'cities',
-    keywords: ['city', 'cities', 'bengaluru', 'delhi', 'mumbai', 'pune', 'chennai', 'available', 'india'],
-    anchors: ['city', 'cities', 'bengaluru', 'delhi', 'mumbai', 'pune', 'chennai'],
-    answer:
-      "AmbiSprout is built for India 🇮🇳 — city challenges currently run across Bengaluru, Delhi, Mumbai, Pune, and Chennai, and the app itself works anywhere in India. We're growing city by city with our founding community.",
-  },
-  {
-    id: 'join',
-    keywords: ['join', 'sign up', 'signup', 'register', 'start', 'get started', 'how to join'],
-    anchors: ['join', 'signup', 'register'],
-    answer:
-      'Welcome aboard! 🌱 Hit "Start Your Green Journey" at the top of this page to join the founding community. You\'ll meet Sprout, get your first personalized missions, and start earning Sprout Coins from day one.',
-  },
-  {
-    id: 'audience',
-    keywords: ['students', 'professionals', 'who', 'for me', 'age', 'who is it for'],
-    anchors: ['students', 'professionals'],
-    answer:
-      "AmbiSprout is designed for students and young professionals across India — anyone who wants to live greener without it feeling like homework. Missions fit real life: hostel living, metro commutes, local markets.",
-  },
-  {
-    id: 'community',
-    keywords: ['community', 'leaderboard', 'friends', 'share', 'together'],
-    anchors: ['community', 'leaderboard'],
-    answer:
-      "The community is the heart of AmbiSprout — share wins, take on city challenges together, and climb leaderboards. We're at day one and building in the open: real actions from real members shape every feature we ship.",
-  },
-  {
-    id: 'brands',
-    keywords: ['brands', 'esg', 'partners', 'sponsor', 'companies'],
-    anchors: ['brands', 'esg', 'partners'],
-    answer:
-      'We partner with ESG-friendly brands — companies with genuine sustainability credentials — who fund the rewards you redeem Sprout Coins with. That keeps AmbiSprout free for you while supporting businesses doing right by the planet.',
-  },
-  {
-    id: 'greenwashing',
-    keywords: ['greenwashing', 'trust', 'real', 'legit', 'genuine', 'fake'],
-    anchors: ['greenwashing', 'trust', 'legit'],
-    answer:
-      'Fair question! No greenwashing is a core commitment: missions are AI-verified with photos, receipts, or activity data, and impact estimates follow published emission factors — not made-up math. We publish no inflated member counts either. What you see is real.',
-  },
-  {
-    id: 'carbon',
-    keywords: ['carbon', 'footprint', 'co2', 'impact', 'calculator', 'emissions'],
-    anchors: ['carbon', 'footprint', 'co2'],
-    answer:
-      'AmbiSprout tracks the real CO₂ impact of your actions — travel, food, and shopping — using published emission factors. Complete missions and watch your footprint shrink on your impact dashboard: CO₂ reduced, water conserved, waste avoided.',
+    id: 'ambisprout-vision',
+    keywords: ['vision', 'mission', 'ambisprout vision', 'future', 'goal'],
+    anchors: ['vision', 'mission'],
+    answer: `AmbiSprout's vision is to create a future where sustainable living becomes a natural part of everyday life rather than an occasional effort.\n\nThrough AI guidance, education, and behavioral engagement, AmbiSprout aims to inspire millions of people to make informed choices that contribute to a healthier planet for present and future generations 🌟`,
   },
 ];

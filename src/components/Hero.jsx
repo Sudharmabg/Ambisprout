@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Hoverable from './Hoverable.jsx';
-import { getUser, onAuthChange } from '../lib/googleAuth.js';
 
 /* Served from public/ so index.html can preload it (LCP optimization). */
 const HERO_IMAGE = '/hero-illustration.jpg';
@@ -43,18 +42,12 @@ const labelStyle = {
   color: '#6B7280',
 };
 
-export default function Hero({ onOpenChat, onOpenSignIn }) {
+export default function Hero({ onOpenChat }) {
   const [imgOk, setImgOk] = useState(true);
-  const [user, setUser] = useState(() => getUser());
-
-  useEffect(() => {
-    return onAuthChange((nextUser) => {
-      setUser(nextUser);
-    });
-  }, []);
 
   return (
     <div
+      id="hero"
       className="as-hero as-section-responsive"
       style={{
         position: 'relative',
@@ -127,7 +120,7 @@ export default function Hero({ onOpenChat, onOpenSignIn }) {
             animationDelay: '0.15s',
           }}
         >
-          Gamifying Sustainable Living for India's <span style={{ color: '#2E7D32', fontStyle: 'italic', fontFamily: "'Playfair Display', serif" }}>Next Generation</span>
+          India's AI-Powered <span style={{ color: '#2E7D32', fontStyle: 'italic', fontFamily: "'Playfair Display', serif" }}>Sustainability Companion</span>
         </h1>
         <p
           className="as-hero-desc hero-anim hero-fade"
@@ -135,8 +128,7 @@ export default function Hero({ onOpenChat, onOpenSignIn }) {
             animationDelay: '0.35s',
           }}
         >
-          Building India's leading AI-first sustainability platform that transforms
-          daily habits into verified environmental impact and scalable green commerce.
+          Empowering India's next generation to build verified green habits, track real carbon impact, and turn daily actions into meaningful rewards.
         </p>
 
         <div
@@ -149,55 +141,30 @@ export default function Hero({ onOpenChat, onOpenSignIn }) {
             animationDelay: '0.5s',
           }}
         >
-          {user ? (
-            <Hoverable
-              as="button"
-              onClick={() => onOpenChat(false)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: 'linear-gradient(135deg,#2E7D32,#1f6a29)',
-                color: '#fff',
-                border: 'none',
-                padding: '12px 24px',
-                borderRadius: 12,
-                fontSize: 14,
-                fontWeight: 700,
-                cursor: 'pointer',
-                fontFamily: 'inherit',
-                boxShadow: '0 8px 20px rgba(46,125,50,0.24)',
-                transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
-              }}
-              hoverStyle={{ transform: 'translateY(-4px)', boxShadow: '0 12px 24px rgba(46,125,50,0.3)' }}
-            >
-              Hi, {user.firstName || 'there'}! Open Sprout 🌱
-            </Hoverable>
-          ) : (
-            <Hoverable
-              as="button"
-              onClick={onOpenSignIn}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: 'linear-gradient(135deg,#2E7D32,#1f6a29)',
-                color: '#fff',
-                border: 'none',
-                padding: '12px 24px',
-                borderRadius: 12,
-                fontSize: 14,
-                fontWeight: 700,
-                cursor: 'pointer',
-                fontFamily: 'inherit',
-                boxShadow: '0 8px 20px rgba(46,125,50,0.24)',
-                transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
-              }}
-              hoverStyle={{ transform: 'translateY(-4px)', boxShadow: '0 12px 24px rgba(46,125,50,0.3)' }}
-            >
-              Start Your Green Journey
-            </Hoverable>
-          )}
+          <Hoverable
+            as="a"
+            href="#journey-section"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'linear-gradient(135deg,#2E7D32,#1f6a29)',
+              color: '#fff',
+              border: 'none',
+              padding: '12px 24px',
+              borderRadius: 12,
+              fontSize: 14,
+              fontWeight: 700,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              boxShadow: '0 8px 20px rgba(46,125,50,0.24)',
+              textDecoration: 'none',
+              transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
+            }}
+            hoverStyle={{ transform: 'translateY(-4px)', boxShadow: '0 12px 24px rgba(46,125,50,0.3)' }}
+          >
+            Start Your Green Journey
+          </Hoverable>
         </div>
 
       </div>

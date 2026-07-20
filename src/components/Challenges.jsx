@@ -70,54 +70,74 @@ function ChallengeCard({ challenge, illustration }) {
         borderRadius: 22,
         overflow: 'hidden',
         boxShadow: '0 8px 24px rgba(27,67,50,0.06)',
+        border: '1px solid #E8DFC8',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
       }}
     >
       {illustration}
-      <div style={{ padding: 22 }}>
-        <div style={{ fontWeight: 700, color: '#1B4332', fontSize: 18, marginBottom: 10 }}>
+      <div style={{ padding: 22, display: 'flex', flexDirection: 'column', flex: 1 }}>
+        <div
+          style={{
+            fontFamily: "'Manrope', sans-serif",
+            fontWeight: 800,
+            color: '#1B4332',
+            fontSize: 18,
+            marginBottom: 14,
+            lineHeight: 1.3,
+          }}
+        >
           {challenge.title}
         </div>
+
         <div
           style={{
             display: 'flex',
-            justifyContent: 'space-between',
+            flexDirection: 'column',
+            gap: 10,
             fontSize: 13,
-            color: '#6B7280',
-            marginBottom: 10,
+            marginBottom: 20,
+            background: '#F7F3E9',
+            padding: '12px 14px',
+            borderRadius: 14,
           }}
         >
-          <span>👥 {challenge.participants}</span>
-          <span>⏳ {challenge.days} days left</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ color: '#6B7280', fontWeight: 600 }}>⏳ Duration</span>
+            <span style={{ color: '#1B4332', fontWeight: 700 }}>{challenge.days} Days</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ color: '#6B7280', fontWeight: 600 }}>🎯 Level</span>
+            <span style={{ color: '#8D6E63', fontWeight: 700 }}>{challenge.difficulty}</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ color: '#6B7280', fontWeight: 600 }}>🪙 Reward</span>
+            <span style={{ color: '#2E7D32', fontWeight: 800 }}>+{challenge.reward} Coins</span>
+          </div>
         </div>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            fontSize: 13,
-            marginBottom: 16,
-          }}
-        >
-          <span style={{ color: '#8D6E63', fontWeight: 600 }}>
-            Difficulty: {challenge.difficulty}
-          </span>
-          <span style={{ color: '#2E7D32', fontWeight: 700 }}>🪙 {challenge.reward} Coins</span>
-        </div>
+
         <button
           onClick={() => setJoined((v) => !v)}
           style={{
+            marginTop: 'auto',
             width: '100%',
             background: joined ? '#4CAF50' : '#2E7D32',
             color: '#fff',
             border: 'none',
-            padding: 11,
+            padding: '12px 16px',
             borderRadius: 12,
             fontWeight: 700,
             fontSize: 14,
             cursor: 'pointer',
             fontFamily: 'inherit',
+            transition: 'all 0.25s ease',
+            boxShadow: joined
+              ? '0 6px 16px rgba(76,175,80,0.3)'
+              : '0 6px 16px rgba(46,125,50,0.25)',
           }}
         >
-          {joined ? '✓ Joined' : 'Join Challenge'}
+          {joined ? '✓ Joined Challenge' : 'Join Challenge'}
         </button>
       </div>
     </div>
@@ -140,7 +160,7 @@ export default function Challenges() {
         setItemsPerPage(3);
       }
     };
-    
+
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -192,7 +212,7 @@ export default function Challenges() {
     }
   };
 
-  // Generate pagination dots (only if we have more items than can fit on one page)
+  // Generate pagination dots
   const showDots = maxIndex > 0;
   const dotsCount = maxIndex + 1;
 
@@ -201,24 +221,64 @@ export default function Challenges() {
       id="challenges-section"
       animate={false}
       className="as-section-responsive"
-      outerStyle={{ maxWidth: 1300, margin: '0 auto', padding: '56px 56px 32px' }}
+      outerStyle={{ maxWidth: 1300, margin: '0 auto', padding: '64px 56px 48px' }}
     >
-      <Reveal
-        as="h2"
-        style={{
-          fontFamily: "'Playfair Display', serif",
-          fontSize: 38,
-          color: '#1B4332',
-          fontWeight: 700,
-          margin: '0 0 32px',
-          textAlign: 'center',
-        }}
-      >
-        Active Challenges
-      </Reveal>
+      {/* Header Eyebrow + Title */}
+      <div style={{ textAlign: 'center', marginBottom: 40 }}>
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            background: 'rgba(46,125,50,0.08)',
+            color: '#2E7D32',
+            padding: '6px 16px',
+            borderRadius: 999,
+            fontSize: 12,
+            fontWeight: 800,
+            letterSpacing: '1.2px',
+            textTransform: 'uppercase',
+            marginBottom: 16,
+          }}
+        >
+          <span
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: '50%',
+              background: '#4CAF50',
+            }}
+          />
+          CHALLENGE PREVIEW
+        </div>
+
+        <h2
+          style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: 42,
+            color: '#1B4332',
+            fontWeight: 700,
+            margin: '0 0 16px',
+          }}
+        >
+          Featured Eco Challenges
+        </h2>
+
+        <p
+          style={{
+            fontSize: 16,
+            color: '#4B5563',
+            maxWidth: 620,
+            margin: '0 auto',
+            lineHeight: 1.6,
+          }}
+        >
+          A sneak peek at upcoming sustainability challenges to earn Sprout Coins and turn green habits into lasting impact.
+        </p>
+      </div>
 
       <div className="as-carousel-wrapper">
-        <div 
+        <div
           className="as-carousel-viewport"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}

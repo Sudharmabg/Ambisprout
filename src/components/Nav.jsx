@@ -1,24 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import logoImg from '../assets/logo_small.png';
 import Hoverable from './Hoverable.jsx';
-import { getUser, onAuthChange, signOut } from '../lib/googleAuth.js';
 
 const links = [
   { label: 'Home', href: '#' },
   { label: 'Community', href: '#community-section' },
   { label: 'Challenges', href: '#challenges-section' },
-  { label: 'Blogs', href: '#' },
+  { label: 'Green Pulse', href: '#green-pulse' },
+  { label: 'Blogs', href: '#blogs-section' },
 ];
 
-export default function Nav({ onLogoClick, onOpenChat, onOpenSignIn }) {
+export default function Nav({ onLogoClick, onOpenChat }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [user, setUser] = useState(() => getUser());
-
-  useEffect(() => {
-    return onAuthChange((nextUser) => {
-      setUser(nextUser);
-    });
-  }, []);
 
   return (
     <>
@@ -84,74 +77,31 @@ export default function Nav({ onLogoClick, onOpenChat, onOpenSignIn }) {
         </div>
 
         <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-          {user ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <button
-                onClick={() => onOpenChat?.(false)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  background: 'rgba(46,125,50,0.08)',
-                  border: '1px solid rgba(46,125,50,0.18)',
-                  padding: '6px 14px',
-                  borderRadius: 999,
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                }}
-              >
-                {user.picture && (
-                  <img
-                    src={user.picture}
-                    alt=""
-                    width="24"
-                    height="24"
-                    style={{ borderRadius: '50%' }}
-                    referrerPolicy="no-referrer"
-                  />
-                )}
-                <span style={{ fontWeight: 600, fontSize: 14, color: '#1B4332' }}>
-                  {user.firstName || 'Profile'}
-                </span>
-              </button>
-              <button
-                onClick={signOut}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: '#6B7280',
-                  fontSize: 13,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  padding: '4px 8px',
-                }}
-              >
-                Sign Out
-              </button>
-            </div>
-          ) : (
-            <div className="as-nav-desktop-button">
-              <Hoverable
-                as="button"
-                onClick={onOpenSignIn}
-                style={{
-                  background: '#2E7D32',
-                  border: 'none',
-                  color: '#fff',
-                  padding: '10px 24px',
-                  borderRadius: 999,
-                  fontWeight: 600,
-                  fontSize: 14,
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  boxShadow: '0 6px 16px rgba(46,125,50,0.28)',
-                }}
-                hoverStyle={{ background: '#1B4332' }}
-              >
-                Start Your Green Journey
-              </Hoverable>
-            </div>
-          )}
+          <div className="as-nav-desktop-button">
+            <Hoverable
+              as="a"
+              href="#journey-section"
+              style={{
+                background: '#2E7D32',
+                border: 'none',
+                color: '#fff',
+                padding: '10px 24px',
+                borderRadius: 999,
+                fontWeight: 600,
+                fontSize: 14,
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                boxShadow: '0 6px 16px rgba(46,125,50,0.28)',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              hoverStyle={{ background: '#1B4332' }}
+            >
+              Start Your Green Journey
+            </Hoverable>
+          </div>
 
           <button
             className="as-hamburger"
@@ -245,89 +195,29 @@ export default function Nav({ onLogoClick, onOpenChat, onOpenSignIn }) {
         </div>
 
         <div style={{ marginTop: 'auto', paddingTop: 20 }}>
-          {user ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px', background: 'rgba(46,125,50,0.06)', borderRadius: 12 }}>
-                {user.picture && (
-                  <img
-                    src={user.picture}
-                    alt=""
-                    width="36"
-                    height="36"
-                    style={{ borderRadius: '50%' }}
-                    referrerPolicy="no-referrer"
-                  />
-                )}
-                <div>
-                  <div style={{ fontWeight: 700, fontSize: 15, color: '#1B4332' }}>{user.name}</div>
-                  <div style={{ fontSize: 12, color: '#6B7280' }}>{user.email}</div>
-                </div>
-              </div>
-              <button
-                style={{
-                  width: '100%',
-                  background: '#2E7D32',
-                  border: 'none',
-                  color: '#fff',
-                  padding: '14px 24px',
-                  borderRadius: 14,
-                  fontWeight: 700,
-                  fontSize: 15,
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  boxShadow: '0 6px 16px rgba(46,125,50,0.28)',
-                }}
-                onClick={() => {
-                  setDrawerOpen(false);
-                  onOpenChat?.(false);
-                }}
-              >
-                Open Sprout Chat
-              </button>
-              <button
-                style={{
-                  width: '100%',
-                  background: 'transparent',
-                  border: '1px solid #E8DFC8',
-                  color: '#6B7280',
-                  padding: '12px 24px',
-                  borderRadius: 14,
-                  fontWeight: 600,
-                  fontSize: 14,
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                }}
-                onClick={() => {
-                  setDrawerOpen(false);
-                  signOut();
-                }}
-              >
-                Sign Out
-              </button>
-            </div>
-          ) : (
-            <button
-              style={{
-                width: '100%',
-                background: '#2E7D32',
-                border: 'none',
-                color: '#fff',
-                padding: '14px 24px',
-                borderRadius: 14,
-                fontWeight: 700,
-                fontSize: 15,
-                cursor: 'pointer',
-                fontFamily: 'inherit',
-                boxShadow: '0 6px 16px rgba(46,125,50,0.28)',
-              }}
-              onClick={() => {
-                setDrawerOpen(false);
-                onOpenSignIn?.();
-              }}
-            >
-              Start Your Green Journey
-            </button>
-          )}
+          <a
+            href="#journey-section"
+            style={{
+              width: '100%',
+              background: '#2E7D32',
+              border: 'none',
+              color: '#fff',
+              padding: '14px 24px',
+              borderRadius: 14,
+              fontWeight: 700,
+              fontSize: 15,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              boxShadow: '0 6px 16px rgba(46,125,50,0.28)',
+              textDecoration: 'none',
+              display: 'block',
+              textAlign: 'center',
+              boxSizing: 'border-box',
+            }}
+            onClick={() => setDrawerOpen(false)}
+          >
+            Start Your Green Journey
+          </a>
         </div>
       </div>
     </>

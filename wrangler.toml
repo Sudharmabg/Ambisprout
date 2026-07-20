@@ -16,4 +16,8 @@ id = "5e06763dc5624c128c56144ca939f537"
 [vars]
 VITE_GOOGLE_CLIENT_ID = "394828699459-6quvjih68iarg8c9gi8qpg04aibiiiac.apps.googleusercontent.com"
 GOOGLE_CLIENT_ID = "394828699459-6quvjih68iarg8c9gi8qpg04aibiiiac.apps.googleusercontent.com"
+SUPABASE_URL = ""
+SUPABASE_SERVICE_KEY = ""
 
+# Set these secrets in Cloudflare Dashboard:
+# - SUPABASE_SERVICE_KEY (set in Pages > Settings > Variables & secrets)

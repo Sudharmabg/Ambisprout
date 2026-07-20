@@ -135,10 +135,24 @@ export default function AISection({ onOpenChat }) {
   const [view, setView] = useState({ user: false, typing: false, aiText: '', card: false });
   const runIdRef = useRef(0);
   const panelRef = useRef(null);
+  const pillRefs = useRef([]);
+  const tabsContainerRef = useRef(null);
 
   const scenario = aiScenarios[active];
   const streaming =
     view.aiText.length > 0 && view.aiText.length < scenario.reply.length;
+
+  /* Auto scroll active pill within the tabs container only (never scrolling the main window) */
+  useEffect(() => {
+    const container = tabsContainerRef.current;
+    const pill = pillRefs.current[active];
+    if (container && pill) {
+      const containerRect = container.getBoundingClientRect();
+      const pillRect = pill.getBoundingClientRect();
+      const offset = pillRect.left - containerRect.left - (containerRect.width / 2) + (pillRect.width / 2);
+      container.scrollBy({ left: offset, behavior: 'smooth' });
+    }
+  }, [active]);
 
   /* Scripted playback with cancellation (tab switches invalidate old runs). */
   const play = useCallback((idx) => {
@@ -216,7 +230,7 @@ export default function AISection({ onOpenChat }) {
 
   return (
     <Section
-      id="ai-section"
+      id="green-pulse"
       className="as-section-responsive"
       outerStyle={{
         background:
@@ -238,8 +252,33 @@ export default function AISection({ onOpenChat }) {
       >
         {/* Left — copy + scenario tabs */}
         <div>
-          <div className="ai-eyebrow">
-            <span className="ai-eyebrow-dot" /> LIVE DEMO
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              background: 'rgba(76, 175, 80, 0.12)',
+              border: '1px solid rgba(76, 175, 80, 0.25)',
+              color: '#8FD694',
+              padding: '6px 16px',
+              borderRadius: 999,
+              fontSize: 12,
+              fontWeight: 800,
+              letterSpacing: '1.2px',
+              textTransform: 'uppercase',
+              marginBottom: 16,
+            }}
+          >
+            <span
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                background: '#4CAF50',
+                boxShadow: '0 0 8px #4CAF50',
+              }}
+            />
+            LIVE DEMO
           </div>
           <h2
             className="ai-title"
@@ -265,10 +304,11 @@ export default function AISection({ onOpenChat }) {
             real time.
           </p>
 
-          <div className="ai-tabs" role="group" aria-label="Sprout AI demo scenarios">
+          <div ref={tabsContainerRef} className="ai-tabs" role="group" aria-label="Sprout AI demo scenarios">
             {aiScenarios.map((sc, i) => (
               <button
                 key={sc.key}
+                ref={(el) => (pillRefs.current[i] = el)}
                 type="button"
                 aria-pressed={i === active}
                 className={`ai-tab${i === active ? ' active' : ''}`}

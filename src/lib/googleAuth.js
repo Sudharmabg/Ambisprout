@@ -5,6 +5,8 @@
  * sent to /api/chat, where it is cryptographically verified server-side.
  */
 
+import { supabase } from './supabase.js';
+
 const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
 const STORAGE_KEY = 'as_user';
 const GIS_SRC = 'https://accounts.google.com/gsi/client';
@@ -43,6 +45,7 @@ export function getUser() {
 
 export function signOut() {
   localStorage.removeItem(STORAGE_KEY);
+  supabase.auth.signOut().catch(() => {});
   notify();
 }
 
@@ -56,7 +59,7 @@ function notify() {
   listeners.forEach((fn) => fn(user));
 }
 
-function handleCredential(response) {
+async function handleCredential(response) {
   const payload = decodeJwtPayload(response.credential);
   if (!payload) return;
   const user = {
@@ -69,6 +72,17 @@ function handleCredential(response) {
     picture: payload.picture || '',
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+  
+  try {
+    // Exchange Google ID Token for a Supabase session
+    await supabase.auth.signInWithIdToken({
+      provider: 'google',
+      token: response.credential,
+    });
+  } catch (err) {
+    console.error('Failed to sync sign-in with Supabase Auth:', err);
+  }
+
   notify();
 }
 

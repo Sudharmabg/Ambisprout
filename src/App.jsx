@@ -10,21 +10,24 @@ import Trust from './components/Trust.jsx';
 import FinalCTA from './components/FinalCTA.jsx';
 import Footer from './components/Footer.jsx';
 import ChatWidget from './components/ChatWidget.jsx';
-import SignInModal from './components/SignInModal.jsx';
 import logoImg from './assets/logo.png';
 import sproutImg from './assets/sprout_ai.jpeg';
 import logoSmall from './assets/logo_small.png';
 
 export default function App() {
   const [chatOpen, setChatOpen] = useState(false);
-  const [signInOpen, setSignInOpen] = useState(false);
   const [logoFullscreen, setLogoFullscreen] = useState(false);
   const [showFloatingChat, setShowFloatingChat] = useState(false);
 
   const openChat = () => setChatOpen(true);
   const closeChat = () => setChatOpen(false);
-  const openSignIn = () => setSignInOpen(true);
-  const closeSignIn = () => setSignInOpen(false);
+
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,20 +64,19 @@ export default function App() {
         minHeight: '100vh',
       }}
     >
-      <Nav onLogoClick={openLogoFullscreen} onOpenChat={openChat} onOpenSignIn={openSignIn} />
+      <Nav onLogoClick={openLogoFullscreen} onOpenChat={openChat} />
       <main>
-        <Hero onOpenChat={openChat} onOpenSignIn={openSignIn} />
+        <Hero onOpenChat={openChat} />
         <Features />
         <GreenJourney />
         <Challenges />
         <Community />
         <AISection onOpenChat={openChat} />
         <Trust />
-        <FinalCTA onOpenChat={openChat} onOpenSignIn={openSignIn} />
+        <FinalCTA onOpenChat={openChat} />
       </main>
       <Footer onLogoClick={openLogoFullscreen} />
       <ChatWidget open={chatOpen} onClose={closeChat} />
-      <SignInModal open={signInOpen} onClose={closeSignIn} />
 
       {!chatOpen && showFloatingChat && (
         <>
