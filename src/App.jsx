@@ -60,7 +60,6 @@ export default function App() {
         fontFamily: "'Manrope', sans-serif",
         color: '#2F3A3D',
         background: '#F7F3E9',
-        overflowX: 'hidden',
         minHeight: '100vh',
       }}
     >

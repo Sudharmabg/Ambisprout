@@ -289,7 +289,7 @@ export default function AISection({ onOpenChat }) {
               margin: '0 0 14px',
             }}
           >
-            Meet Sprout AI
+            Green Pulse
           </h2>
           <p
             style={{

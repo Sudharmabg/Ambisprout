@@ -15,6 +15,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 [id] {
@@ -26,6 +27,7 @@ body {
   background: var(--paper);
   font-family: 'Manrope', sans-serif;
   color: var(--ink);
+  overflow-x: hidden;
 }
 
 @keyframes floatY {
@@ -337,8 +339,15 @@ body {
   pointer-events: auto;
 }
 
-/* Navbar responsive adjustments */
+/* Navbar sticky positioning & responsiveness */
 .as-navbar {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+  background: rgba(247, 243, 233, 0.92) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid #e8dfc8 !important;
   padding: 16px 56px !important;
 }
 
