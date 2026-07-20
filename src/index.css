@@ -1294,7 +1294,7 @@ body {
 }
 @media (max-width: 900px) {
   /* Stacked layout: copy + tabs first, panel below */
-  #ai-section {
+  #sprout-ai, #ai-section {
     padding: 56px 24px 64px !important;
   }
   .ai-grid {
@@ -1333,7 +1333,7 @@ body {
   .ai-cta { width: 100%; text-align: center; margin-top: 24px !important; }
 }
 @media (max-width: 480px) {
-  #ai-section {
+  #sprout-ai, #ai-section {
     padding: 44px 16px 56px !important;
   }
   .ai-title { font-size: 28px !important; margin-bottom: 10px !important; }
@@ -2067,7 +2067,11 @@ img, video, svg, canvas {
 @media (max-width: 900px) {
   .as-carousel-btn.prev-btn { left: 4px; }
   .as-carousel-btn.next-btn { right: 4px; }
+  .as-headline-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
 @media (max-width: 640px) {
   .as-carousel-btn { display: none; }
 }
+

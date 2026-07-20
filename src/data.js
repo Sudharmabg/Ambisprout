@@ -1,3 +1,5 @@
+import hydrogenTrainImg from './assets/news/hydrogen_train.png';
+
 // Static content for the AmbiSprout homepage, ported from the design component.
 
 export const features = [
@@ -6,7 +8,7 @@ export const features = [
     icon: 'bot',
     title: 'AI Sustainability Coach',
     desc: 'Your always-on companion that turns your routine into personalized daily missions and nudges you toward greener habits.',
-    href: '#ai-section',
+    href: '#sprout-ai',
     cta: 'Meet Sprout',
   },
   {
@@ -14,7 +16,7 @@ export const features = [
     icon: 'globe',
     title: 'Carbon Footprint Calculator',
     desc: 'See the real CO₂ impact of your travel, food, and shopping — then watch it shrink as you complete missions.',
-    href: '#ai-section',
+    href: '#sprout-ai',
     cta: 'Track impact',
   },
   {
@@ -22,7 +24,7 @@ export const features = [
     icon: 'camera',
     title: 'AI Image Verification',
     desc: 'Snap a photo to prove a task is done — our AI verifies it instantly and credits your streak.',
-    href: '#ai-section',
+    href: '#sprout-ai',
     cta: 'Learn more',
   },
   {
@@ -30,7 +32,7 @@ export const features = [
     icon: 'receipt',
     title: 'AI Receipt Analysis',
     desc: 'Scan a bill and get an instant read on your shopping footprint with greener swap suggestions.',
-    href: '#ai-section',
+    href: '#sprout-ai',
     cta: 'Learn more',
   },
   {
@@ -229,11 +231,20 @@ export const challengesData = [
   { id: 'trees', title: 'Chennai Tree Plantation', participants: '3,960', days: 14, difficulty: 'Hard', reward: 400 },
 ];
 
+export const defaultFallbackReply = `I'm currently operating in offline guide mode 🌱 
+
+Here are a few quick ways to get started with sustainable living today:
+• **Green Commute**: Swap 1 motor trip for walking, cycling, or public transit to save ~1.5 kg CO₂.
+• **Zero Single-Use**: Carry a reusable water bottle and cloth tote bag on daily errands.
+• **Energy Smart**: Unplug idle electronics to reduce phantom power draw.
+
+Feel free to pick one of the quick question chips below or ask me about AmbiSprout's vision and features!`;
+
 export const chatReplies = [
-  'Great question! Try swapping single-use plastics for reusable alternatives — small swaps add up fast. 🌿',
-  'Based on your recent activity, biking twice this week could save ~1.2kg CO₂. Want me to add it as a mission?',
-  'Composting kitchen waste can cut your household footprint significantly. I can walk you through it!',
-  "You're doing great — 8.4kg CO₂ saved this month already. Keep the streak going! 🍃",
+  'Swapping single-use plastics for reusable alternatives is one of the easiest ways to make a daily difference. Small habits add up fast! 🌿',
+  'Did you know? Walking or biking twice a week can save up to 1.2 kg of CO₂ every week. Would you like to set a green commute goal?',
+  'Composting kitchen waste reduces landfill methane and enriches garden soil naturally. I can help guide you through easy home composting tips! 🍃',
+  'You are doing great! Every verified green action brings India closer to a zero-carbon future. Keep the green streak going! ✨',
 ];
 
 // Suggested prompts shown as chips in the chat widget.
@@ -348,6 +359,122 @@ export const faqBank = [
     id: 'ambisprout-vision',
     keywords: ['vision', 'mission', 'ambisprout vision', 'future', 'goal'],
     anchors: ['vision', 'mission'],
-    answer: `AmbiSprout's vision is to create a future where sustainable living becomes a natural part of everyday life rather than an occasional effort.\n\nThrough AI guidance, education, and behavioral engagement, AmbiSprout aims to inspire millions of people to make informed choices that contribute to a healthier planet for present and future generations 🌟`,
+    answer: `To build India's largest and most trusted AI-Powered Green Commerce ecosystem that transforms Sustainable intent into everyday action through intelligent guidance, community engagement, verified environmental impact and Rewarding Economic Opportunities. 🌟`,
   },
 ];
+
+// Eco Pulse News Categories
+export const ecoNewsCategories = [
+  'All',
+  'Renewable Energy',
+  'Green Mobility',
+  'India Eco Tech',
+  'Climate Policy',
+  'Circular Economy',
+];
+
+// Initial Eco Pulse News Stories
+export const initialEcoNewsData = [
+  {
+    id: 'news-1',
+    isHeadline: true,
+    title: 'India’s First Indigenously Designed Hydrogen-Powered Train Flagged Off on Jind-Sonipat Route',
+    subtitle: 'The 10-coach "Namo Green Rail" runs on a 1,200 kW hydrogen fuel cell propulsion system, emitting only water vapor.',
+    category: 'Green Mobility',
+    source: 'Indian Railways / PIB',
+    readTime: '3 min read',
+    timestamp: 'Just now',
+    imageUrl: hydrogenTrainImg,
+    sentiment: 'Positive Breakthrough',
+    summary: 'India’s first indigenously designed hydrogen-powered train was flagged off to operate on the 89-km Jind-Sonipat route in Haryana. The 10-coach "Namo Green Rail" runs on a 1,200 kW hydrogen fuel cell propulsion system, emitting only water vapor and carrying up to 2,600 passengers.\n\nUnlike traditional diesel-powered locomotives or electric trains relying on overhead cables, hydrogen trains generate their own electricity onboard. A Proton Exchange Membrane (PEM) fuel cell mixes hydrogen and oxygen, with electricity as the byproduct and harmless water vapor as the only emission.\n\nThe pilot rollout between Jind and Sonipat is a key milestone for Indian Railways’ "Hydrogen for Heritage" mission. Not only does this reduce the carbon footprint, but the train is also equipped with regenerative braking, which recovers kinetic energy during stops and stores it in onboard batteries to improve efficiency. The launch places India among an elite group of nations—including Germany, Japan, China, and the US—that are pioneering hydrogen rail mobility.',
+    aiTakeaways: [
+      '🚆 10-coach "Namo Green Rail" operates on 89-km Jind-Sonipat route carrying 2,600 passengers.',
+      '⚡ 1,200 kW PEM fuel cell mixes hydrogen & oxygen, generating electricity with zero carbon emissions.',
+      '🌏 Regenerative braking recovers kinetic energy into onboard batteries for maximum energy efficiency.'
+    ],
+    mission: 'Choose public transit or e-mobility for your next city commute'
+  },
+  /*
+  {
+    id: 'news-2',
+    isHeadline: false,
+    title: 'Bengaluru Lake Restoration Project Revives 12 Urban Wetlands',
+    subtitle: 'Community-led desilting and native tree planting restore groundwater levels across East Bengaluru.',
+    category: 'Local India',
+    source: 'Deccan Herald',
+    readTime: '4 min read',
+    timestamp: '5 hours ago',
+    imageUrl: 'https://images.unsplash.com/photo-1544860707-c13c32d24d45?auto=format&fit=crop&w=800&q=80',
+    sentiment: 'Community Win',
+    coinReward: 20,
+    summary: 'A joint initiative between citizen volunteer networks and civic authorities has successfully rejuvenated 12 interconnected urban lakes in Bengaluru using bio-remediation floating islands.',
+    aiTakeaways: [
+      '🌊 Lake recharge improved local groundwater tables by 1.8 meters.',
+      '🦆 Over 40 species of migratory birds returned to urban wetland zones.',
+      '🌿 What you can do: Join local wetland cleanup drives this weekend.'
+    ],
+    mission: 'Participate in a local neighborhood tree or lake cleanup'
+  },
+  {
+    id: 'news-3',
+    isHeadline: false,
+    title: 'PM-Surya Ghar Scheme Drives 1 Million Rooftop Solar Installations',
+    subtitle: 'Subsidies up to ₹78,000 empower urban households to generate zero-emission electricity.',
+    category: 'Climate Policy',
+    source: 'Economic Times',
+    readTime: '2 min read',
+    timestamp: '8 hours ago',
+    imageUrl: 'https://images.unsplash.com/photo-1508873696983-2df515122519?auto=format&fit=crop&w=800&q=80',
+    sentiment: 'Positive Breakthrough',
+    coinReward: 15,
+    summary: 'The national rooftop solar initiative has crossed 1 million residential applications. Households report up to 80% reductions in monthly power bills while feeding excess clean energy back to the grid.',
+    aiTakeaways: [
+      '☀️ Direct financial subsidy provided for up to 3kW home solar setups.',
+      '💡 Average residential savings: ₹2,500/month on electricity bills.',
+      '🌱 What you can do: Check rooftop solar eligibility for your pincode.'
+    ],
+    mission: 'Check your rooftop solar eligibility or turn off unused appliances'
+  },
+  {
+    id: 'news-4',
+    isHeadline: false,
+    title: 'Delhi Adds 500 Low-Floor Electric Buses to Public Transport Network',
+    subtitle: 'Capital city moves closer to goal of 80% electric public transit fleet by end of 2026.',
+    category: 'Green Mobility',
+    source: 'NDTV Green',
+    readTime: '3 min read',
+    timestamp: '12 hours ago',
+    imageUrl: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80',
+    sentiment: 'Positive Breakthrough',
+    coinReward: 20,
+    summary: 'Delhi Transport Corporation inducted 500 air-conditioned electric buses equipped with real-time GPS tracking and zero tailpipe emissions, replacing aging diesel transit routes.',
+    aiTakeaways: [
+      '🚌 Cuts city diesel consumption by 14,000 liters every single day.',
+      '📱 Integrated seamlessly with unified public transit pass apps.',
+      '🌱 What you can do: Take public transit for your next 3 city trips.'
+    ],
+    mission: 'Swap 1 personal vehicle trip for metro or e-bus ride'
+  },
+  {
+    id: 'news-5',
+    isHeadline: false,
+    title: 'IIT Madras Researchers Create Seaweed-Based Biodegradable Packaging',
+    subtitle: 'New eco-material degrades in 30 days and offers waterproof protection for food delivery.',
+    category: 'India Eco Tech',
+    source: 'The Hindu Tech',
+    readTime: '4 min read',
+    timestamp: '1 day ago',
+    imageUrl: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=800&q=80',
+    sentiment: 'Innovation Spotlight',
+    coinReward: 25,
+    summary: 'Biotechnology researchers at IIT Madras have patented a 100% home-compostable film made from red marine algae. Leading e-commerce and food apps are trialing the material for packaging.',
+    aiTakeaways: [
+      '🧪 Completely dissolves in soil within 30 days without microplastics.',
+      '📦 Costs only 10% more than traditional plastic with mass production.',
+      '🌱 What you can do: Request plastic-free packaging on online orders.'
+    ],
+    mission: 'Choose plastic-free packaging options on your next delivery'
+  }
+  */
+];
+

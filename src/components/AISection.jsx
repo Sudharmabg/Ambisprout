@@ -230,7 +230,7 @@ export default function AISection({ onOpenChat }) {
 
   return (
     <Section
-      id="green-pulse"
+      id="sprout-ai"
       className="as-section-responsive"
       outerStyle={{
         background:
@@ -289,7 +289,7 @@ export default function AISection({ onOpenChat }) {
               margin: '0 0 14px',
             }}
           >
-            Green Pulse
+            Sprout AI
           </h2>
           <p
             style={{

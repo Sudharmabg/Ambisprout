@@ -3,15 +3,25 @@ import logoImg from '../assets/logo_small.png';
 import Hoverable from './Hoverable.jsx';
 
 const links = [
-  { label: 'Home', href: '#' },
-  { label: 'Community', href: '#community-section' },
-  { label: 'Challenges', href: '#challenges-section' },
-  { label: 'Green Pulse', href: '#green-pulse' },
-  { label: 'Blogs', href: '#blogs-section' },
+  { label: 'Home', href: '#', view: 'home' },
+  { label: 'Community', href: '#community-section', view: 'home' },
+  { label: 'Challenges', href: '#challenges-section', view: 'home' },
+  { label: 'Green Pulse', href: '#eco-pulse', view: 'eco-pulse' },
+  { label: 'Blogs', href: '#blogs-section', view: 'home' },
 ];
 
-export default function Nav({ onLogoClick, onOpenChat }) {
+export default function Nav({ onLogoClick, onOpenChat, currentView, onNavigate }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const handleLinkClick = (e, link) => {
+    if (link.view === 'eco-pulse') {
+      e.preventDefault();
+      window.location.hash = '#eco-pulse';
+      if (onNavigate) onNavigate('eco-pulse');
+    } else if (currentView === 'eco-pulse' && link.view === 'home') {
+      if (onNavigate) onNavigate('home');
+    }
+  };
 
   return (
     <>
@@ -63,9 +73,10 @@ export default function Nav({ onLogoClick, onOpenChat }) {
               key={l.label}
               as="a"
               href={l.href}
+              onClick={(e) => handleLinkClick(e, l)}
               style={{
-                color: '#1B4332',
-                fontWeight: 600,
+                color: l.view === currentView ? '#2E7D32' : '#1B4332',
+                fontWeight: l.view === currentView ? 700 : 600,
                 fontSize: 15,
                 textDecoration: 'none',
               }}
@@ -178,10 +189,13 @@ export default function Nav({ onLogoClick, onOpenChat }) {
             <a
               key={l.label}
               href={l.href}
-              onClick={() => setDrawerOpen(false)}
+              onClick={(e) => {
+                setDrawerOpen(false);
+                handleLinkClick(e, l);
+              }}
               style={{
-                color: '#1B4332',
-                fontWeight: 600,
+                color: l.view === currentView ? '#2E7D32' : '#1B4332',
+                fontWeight: l.view === currentView ? 700 : 600,
                 fontSize: 16,
                 textDecoration: 'none',
                 padding: '8px 0',

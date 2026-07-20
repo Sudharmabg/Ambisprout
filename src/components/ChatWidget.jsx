@@ -135,15 +135,17 @@ export default function ChatWidget({ open, onClose }) {
         }
         break;
       case 'error':
-      default:
+      default: {
+        const fallbackMsg = chatReplies[Math.floor(Math.random() * chatReplies.length)];
         setMessages((prev) => [
           ...prev,
           {
             role: 'assistant',
-            content: `${chatReplies[Math.floor(Math.random() * chatReplies.length)]}\n\n(I'm having trouble reaching my AI brain right now — try again in a moment.)`,
+            content: `${fallbackMsg}\n\n🌱 *Sprout Guide*: I am currently running in offline guide mode. Feel free to pick one of the question chips below or ask me about sustainable living!`,
           },
         ]);
         break;
+      }
     }
     setStatus('idle');
   }, []);

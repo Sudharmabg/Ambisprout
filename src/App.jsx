@@ -10,23 +10,48 @@ import Trust from './components/Trust.jsx';
 import FinalCTA from './components/FinalCTA.jsx';
 import Footer from './components/Footer.jsx';
 import ChatWidget from './components/ChatWidget.jsx';
+import EcoPulsePage from './components/EcoPulsePage.jsx';
 import logoImg from './assets/logo.png';
 import sproutImg from './assets/sprout_ai.jpeg';
-import logoSmall from './assets/logo_small.png';
 
 export default function App() {
   const [chatOpen, setChatOpen] = useState(false);
   const [logoFullscreen, setLogoFullscreen] = useState(false);
   const [showFloatingChat, setShowFloatingChat] = useState(false);
+  const [currentView, setCurrentView] = useState(() => {
+    return window.location.hash === '#eco-pulse' ? 'eco-pulse' : 'home';
+  });
 
   const openChat = () => setChatOpen(true);
   const closeChat = () => setChatOpen(false);
+
+  const navigateTo = (view) => {
+    setCurrentView(view);
+    if (view === 'eco-pulse') {
+      window.location.hash = '#eco-pulse';
+    } else if (window.location.hash === '#eco-pulse') {
+      window.location.hash = '';
+    }
+    window.scrollTo(0, 0);
+  };
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash === '#eco-pulse') {
+        setCurrentView('eco-pulse');
+        window.scrollTo(0, 0);
+      } else {
+        setCurrentView('home');
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
-    window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
@@ -40,6 +65,7 @@ export default function App() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
   const openLogoFullscreen = () => setLogoFullscreen(true);
   const closeLogoFullscreen = () => setLogoFullscreen(false);
 
@@ -63,17 +89,29 @@ export default function App() {
         minHeight: '100vh',
       }}
     >
-      <Nav onLogoClick={openLogoFullscreen} onOpenChat={openChat} />
-      <main>
-        <Hero onOpenChat={openChat} />
-        <Features />
-        <GreenJourney />
-        <Challenges />
-        <Community />
-        <AISection onOpenChat={openChat} />
-        <Trust />
-        <FinalCTA onOpenChat={openChat} />
-      </main>
+      <Nav
+        onLogoClick={openLogoFullscreen}
+        onOpenChat={openChat}
+        currentView={currentView}
+        onNavigate={navigateTo}
+      />
+      {currentView === 'eco-pulse' ? (
+        <EcoPulsePage
+          onBackToHome={() => navigateTo('home')}
+          onOpenChat={openChat}
+        />
+      ) : (
+        <main>
+          <Hero onOpenChat={openChat} />
+          <Features />
+          <GreenJourney />
+          <Challenges />
+          <Community />
+          <AISection onOpenChat={openChat} />
+          <Trust />
+          <FinalCTA onOpenChat={openChat} />
+        </main>
+      )}
       <Footer onLogoClick={openLogoFullscreen} />
       <ChatWidget open={chatOpen} onClose={closeChat} />
 
