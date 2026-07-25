@@ -4,6 +4,15 @@ export default function NewsModal({ article, onClose, onTakeAction, onStartJourn
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [speechProgress, setSpeechProgress] = useState(0);
   const [actionClaimed, setActionClaimed] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  const handleScroll = (e) => {
+    const target = e.target;
+    const scrollHeight = target.scrollHeight - target.clientHeight;
+    if (scrollHeight > 0) {
+      setScrollProgress((target.scrollTop / scrollHeight) * 100);
+    }
+  };
 
   useEffect(() => {
     let interval;
@@ -21,6 +30,16 @@ export default function NewsModal({ article, onClose, onTakeAction, onStartJourn
     return () => clearInterval(interval);
   }, [isPlayingAudio]);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   if (!article) return null;
 
   const handleClaim = () => {
@@ -35,6 +54,7 @@ export default function NewsModal({ article, onClose, onTakeAction, onStartJourn
       onClick={onClose}
       role="dialog"
       aria-modal="true"
+      className="as-modal-overlay"
       style={{
         position: 'fixed',
         top: 0,
@@ -53,13 +73,14 @@ export default function NewsModal({ article, onClose, onTakeAction, onStartJourn
     >
       <div
         onClick={(e) => e.stopPropagation()}
+        className="as-modal-card"
         style={{
           background: '#FFFDF9',
           borderRadius: '24px',
           maxWidth: '720px',
           width: '100%',
           maxHeight: '90vh',
-          overflowY: 'auto',
+          overflow: 'hidden',
           boxShadow: '0 24px 60px rgba(27,67,50,0.35)',
           border: '1px solid #E8DFC8',
           position: 'relative',
@@ -67,82 +88,109 @@ export default function NewsModal({ article, onClose, onTakeAction, onStartJourn
           flexDirection: 'column',
         }}
       >
-        {/* Banner Image */}
-        <div style={{ position: 'relative', width: '100%', height: 200, flexShrink: 0 }}>
-          <img
-            src={article.imageUrl}
-            alt={article.title}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: 'linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(27,67,50,0.85) 100%)',
-            }}
-          />
-          <button
-            onClick={onClose}
-            aria-label="Close story"
-            style={{
-              position: 'absolute',
-              top: 20,
-              right: 20,
-              background: 'rgba(255, 255, 255, 0.25)',
-              border: 'none',
-              borderRadius: '50%',
-              width: 36,
-              height: 36,
-              fontSize: 18,
-              cursor: 'pointer',
-              color: '#fff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backdropFilter: 'blur(4px)',
-            }}
-          >
-            ✕
-          </button>
+        {/* Scroll Progress Bar */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: `${scrollProgress}%`,
+            height: '4px',
+            background: '#4CAF50',
+            zIndex: 1200,
+            transition: 'width 0.1s ease',
+          }}
+        />
 
-          <div style={{ position: 'absolute', bottom: 20, left: 24, right: 24, color: '#fff' }}>
-            <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 8 }}>
-              <span
+        {/* Sticky/Fixed Close Button */}
+        <button
+          onClick={onClose}
+          aria-label="Close story"
+          style={{
+            position: 'absolute',
+            top: 20,
+            right: 20,
+            background: 'rgba(27, 67, 50, 0.85)',
+            border: 'none',
+            borderRadius: '50%',
+            width: 36,
+            height: 36,
+            fontSize: 18,
+            cursor: 'pointer',
+            color: '#fff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backdropFilter: 'blur(4px)',
+            zIndex: 1210,
+          }}
+        >
+          ✕
+        </button>
+
+        {/* Inner Scrollable Container */}
+        <div
+          onScroll={handleScroll}
+          style={{
+            overflowY: 'auto',
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          {/* Banner Image */}
+          <div style={{ position: 'relative', width: '100%', height: 200, flexShrink: 0 }}>
+            <img
+              src={article.imageUrl}
+              alt={article.title}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(27,67,50,0.85) 100%)',
+              }}
+            />
+
+            <div style={{ position: 'absolute', bottom: 20, left: 24, right: 24, color: '#fff' }}>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 8 }}>
+                <span
+                  style={{
+                    background: '#2E7D32',
+                    color: '#fff',
+                    padding: '4px 12px',
+                    borderRadius: 999,
+                    fontSize: 11,
+                    fontWeight: 800,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                  }}
+                >
+                  {article.category}
+                </span>
+                <span style={{ fontSize: 12, opacity: 0.9 }}>• {article.source}</span>
+                <span style={{ fontSize: 12, opacity: 0.9 }}>• {article.timestamp}</span>
+              </div>
+              <h1
                 style={{
-                  background: '#2E7D32',
-                  color: '#fff',
-                  padding: '4px 12px',
-                  borderRadius: 999,
-                  fontSize: 11,
-                  fontWeight: 800,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: 26,
+                  fontWeight: 700,
+                  margin: 0,
+                  lineHeight: 1.25,
                 }}
               >
-                {article.category}
-              </span>
-              <span style={{ fontSize: 12, opacity: 0.9 }}>• {article.source}</span>
-              <span style={{ fontSize: 12, opacity: 0.9 }}>• {article.timestamp}</span>
+                {article.title}
+              </h1>
             </div>
-            <h1
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: 26,
-                fontWeight: 700,
-                margin: 0,
-                lineHeight: 1.25,
-              }}
-            >
-              {article.title}
-            </h1>
           </div>
-        </div>
 
-        {/* Modal Body */}
-        <div style={{ padding: '28px 32px 36px' }}>
+          {/* Modal Body */}
+          <div style={{ padding: '28px 32px 36px' }}>
           {/* Audio Simulation Player */}
           <div
             style={{
@@ -257,6 +305,7 @@ export default function NewsModal({ article, onClose, onTakeAction, onStartJourn
               Start Your Green Journey →
             </button>
           </div>
+        </div>
         </div>
       </div>
     </div>

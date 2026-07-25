@@ -2075,3 +2075,49 @@ img, video, svg, canvas {
   .as-carousel-btn { display: none; }
 }
 
+/* Responsive adjustments for Blogs Page and Blog Modal */
+@media (max-width: 900px) {
+  .as-featured-img-container {
+    height: 320px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .as-blogs-header {
+    padding: 24px 20px !important;
+  }
+  .as-blogs-header-title {
+    font-size: 28px !important;
+  }
+  .as-featured-content {
+    padding: 24px 20px !important;
+  }
+  
+  /* Blog and News Modal responsive margins for mobile backdrop clicks */
+  .as-modal-overlay {
+    padding: 16px !important;
+  }
+  .as-modal-card {
+    max-height: 90vh !important;
+    border-radius: 20px !important;
+  }
+  .as-modal-hero {
+    height: 220px !important;
+  }
+  .as-modal-hero-text {
+    bottom: 16px !important;
+    left: 20px !important;
+    right: 20px !important;
+  }
+  .as-modal-hero-title {
+    font-size: 19px !important;
+  }
+  .as-modal-body {
+    padding: 20px 16px 32px !important;
+  }
+  .as-modal-bullets {
+    padding: 16px 16px 16px 28px !important;
+  }
+}
+
+

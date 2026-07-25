@@ -1,13 +1,54 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { blogCategories, blogsData } from '../data/blogsData.js';
 import BlogModal from './BlogModal.jsx';
 import Hoverable from './Hoverable.jsx';
 
-export default function BlogsPage({ onBackToHome, onStartJourney }) {
+export default function BlogsPage({ initialBlogSlug, onBackToHome, onStartJourney }) {
   const [blogs] = useState(blogsData);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeBlogModal, setActiveBlogModal] = useState(null);
+
+  // Sync modal state with URL hash slug
+  useEffect(() => {
+    if (initialBlogSlug) {
+      const matchedBlog = blogs.find((b) => b.slug === initialBlogSlug);
+      if (matchedBlog) {
+        setActiveBlogModal(matchedBlog);
+      }
+    } else {
+      setActiveBlogModal(null);
+    }
+  }, [initialBlogSlug, blogs]);
+
+  // Update document title and meta description dynamically for SEO
+  useEffect(() => {
+    if (activeBlogModal) {
+      const originalTitle = document.title;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      const originalDesc = metaDesc ? metaDesc.getAttribute('content') : '';
+
+      document.title = `${activeBlogModal.metaTitle || activeBlogModal.title} | AmbiSprout`;
+      if (metaDesc && activeBlogModal.metaDescription) {
+        metaDesc.setAttribute('content', activeBlogModal.metaDescription);
+      }
+
+      return () => {
+        document.title = originalTitle;
+        if (metaDesc) {
+          metaDesc.setAttribute('content', originalDesc);
+        }
+      };
+    }
+  }, [activeBlogModal]);
+
+  const handleSelectBlog = (blog) => {
+    window.location.hash = `#blog/${blog.slug}`;
+  };
+
+  const handleCloseBlog = () => {
+    window.location.hash = '#blogs-page';
+  };
 
   const filteredBlogs = blogs.filter((blog) => {
     const matchesCat = selectedCategory === 'All' || blog.category.toLowerCase() === selectedCategory.toLowerCase();
@@ -19,7 +60,12 @@ export default function BlogsPage({ onBackToHome, onStartJourney }) {
   });
 
   const featuredBlog = blogs.find((b) => b.isFeatured) || blogs[0];
-  const regularBlogs = filteredBlogs.filter((b) => b.id !== featuredBlog?.id);
+  const isSearchingOrFiltering = selectedCategory !== 'All' || searchQuery.trim() !== '';
+  const showFeaturedSpotlight = !isSearchingOrFiltering && featuredBlog;
+
+  const regularBlogs = showFeaturedSpotlight
+    ? filteredBlogs.filter((b) => b.id !== featuredBlog?.id)
+    : filteredBlogs;
 
   return (
     <div
@@ -32,6 +78,7 @@ export default function BlogsPage({ onBackToHome, onStartJourney }) {
     >
       {/* Top Header Navigation Bar for Blogs */}
       <div
+        className="as-blogs-header"
         style={{
           background: 'linear-gradient(135deg, #1B4332 0%, #16382a 100%)',
           color: '#fff',
@@ -51,28 +98,10 @@ export default function BlogsPage({ onBackToHome, onStartJourney }) {
           }}
         >
           <div>
-            <button
-              onClick={onBackToHome}
-              style={{
-                background: 'rgba(255,255,255,0.12)',
-                border: '1px solid rgba(255,255,255,0.25)',
-                color: '#8FD694',
-                padding: '8px 18px',
-                borderRadius: 999,
-                fontSize: 13,
-                fontWeight: 700,
-                cursor: 'pointer',
-                marginBottom: 12,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 6,
-              }}
-            >
-              ← Back to Home
-            </button>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <span style={{ fontSize: 24 }}>📚</span>
               <h1
+                className="as-blogs-header-title"
                 style={{
                   fontFamily: "'Playfair Display', serif",
                   fontSize: 36,
@@ -94,8 +123,9 @@ export default function BlogsPage({ onBackToHome, onStartJourney }) {
       {/* Main Content Container */}
       <div style={{ maxWidth: 1300, margin: '36px auto 0', padding: '0 24px' }}>
         {/* Featured Read Hero Spotlight */}
-        {featuredBlog && (
+        {showFeaturedSpotlight && (
           <div
+            onClick={() => handleSelectBlog(featuredBlog)}
             style={{
               background: '#FFFDF9',
               borderRadius: '24px',
@@ -103,13 +133,14 @@ export default function BlogsPage({ onBackToHome, onStartJourney }) {
               boxShadow: '0 16px 40px rgba(27,67,50,0.08)',
               overflow: 'hidden',
               display: 'grid',
-              gridTemplateColumns: '1.2fr 1fr',
+              gridTemplateColumns: '1fr 1.2fr',
               alignItems: 'stretch',
               marginBottom: 44,
+              cursor: 'pointer',
             }}
             className="as-headline-grid"
           >
-            <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+            <div className="as-featured-img-container" style={{ position: 'relative', height: '100%', width: '100%' }}>
               <img
                 src={featuredBlog.imageUrl}
                 alt={featuredBlog.title}
@@ -134,7 +165,7 @@ export default function BlogsPage({ onBackToHome, onStartJourney }) {
               </span>
             </div>
 
-            <div style={{ padding: '36px 40px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div className="as-featured-content" style={{ padding: '36px 40px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 12 }}>
                 <span
                   style={{
@@ -188,7 +219,7 @@ export default function BlogsPage({ onBackToHome, onStartJourney }) {
 
               <div>
                 <button
-                  onClick={() => setActiveBlogModal(featuredBlog)}
+                  onClick={() => handleSelectBlog(featuredBlog)}
                   style={{
                     background: '#2E7D32',
                     color: '#fff',
@@ -272,7 +303,7 @@ export default function BlogsPage({ onBackToHome, onStartJourney }) {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
               gap: 28,
             }}
           >
@@ -280,7 +311,7 @@ export default function BlogsPage({ onBackToHome, onStartJourney }) {
               <Hoverable
                 key={blog.id}
                 as="div"
-                onClick={() => setActiveBlogModal(blog)}
+                onClick={() => handleSelectBlog(blog)}
                 style={{
                   background: '#FFFDF9',
                   borderRadius: '20px',
@@ -366,7 +397,7 @@ export default function BlogsPage({ onBackToHome, onStartJourney }) {
       {/* Full Reader Modal */}
       <BlogModal
         blog={activeBlogModal}
-        onClose={() => setActiveBlogModal(null)}
+        onClose={handleCloseBlog}
         onStartJourney={onStartJourney}
       />
     </div>

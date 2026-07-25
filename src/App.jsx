@@ -19,9 +19,10 @@ export default function App() {
   const [chatOpen, setChatOpen] = useState(false);
   const [logoFullscreen, setLogoFullscreen] = useState(false);
   const [showFloatingChat, setShowFloatingChat] = useState(false);
+  const [currentHash, setCurrentHash] = useState(window.location.hash);
   const [currentView, setCurrentView] = useState(() => {
     if (window.location.hash === '#eco-pulse') return 'eco-pulse';
-    if (window.location.hash === '#blogs-page' || window.location.hash === '#blogs') return 'blogs-page';
+    if (window.location.hash === '#blogs-page' || window.location.hash === '#blogs' || window.location.hash.startsWith('#blog/')) return 'blogs-page';
     return 'home';
   });
 
@@ -42,10 +43,12 @@ export default function App() {
 
   useEffect(() => {
     const handleHashChange = () => {
-      if (window.location.hash === '#eco-pulse') {
+      const hash = window.location.hash;
+      setCurrentHash(hash);
+      if (hash === '#eco-pulse') {
         setCurrentView('eco-pulse');
         window.scrollTo(0, 0);
-      } else if (window.location.hash === '#blogs-page' || window.location.hash === '#blogs') {
+      } else if (hash === '#blogs-page' || hash === '#blogs' || hash.startsWith('#blog/')) {
         setCurrentView('blogs-page');
         window.scrollTo(0, 0);
       } else {
@@ -114,6 +117,7 @@ export default function App() {
         />
       ) : currentView === 'blogs-page' ? (
         <BlogsPage
+          initialBlogSlug={currentHash.startsWith('#blog/') ? currentHash.replace('#blog/', '') : null}
           onBackToHome={() => navigateTo('home')}
           onStartJourney={() => {
             navigateTo('home');

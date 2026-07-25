@@ -95,25 +95,6 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
           }}
         >
           <div>
-            <button
-              onClick={onBackToHome}
-              style={{
-                background: 'rgba(255,255,255,0.12)',
-                border: '1px solid rgba(255,255,255,0.25)',
-                color: '#8FD694',
-                padding: '8px 18px',
-                borderRadius: 999,
-                fontSize: 13,
-                fontWeight: 700,
-                cursor: 'pointer',
-                marginBottom: 12,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 6,
-              }}
-            >
-              ← Back to Home
-            </button>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <span
                 style={{

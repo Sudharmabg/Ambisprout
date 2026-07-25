@@ -1,7 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function BlogModal({ blog, onClose, onStartJourney }) {
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   if (!blog) return null;
 
@@ -9,11 +20,20 @@ export default function BlogModal({ blog, onClose, onStartJourney }) {
     setOpenFaqIndex(openFaqIndex === idx ? null : idx);
   };
 
+  const handleScroll = (e) => {
+    const target = e.target;
+    const scrollHeight = target.scrollHeight - target.clientHeight;
+    if (scrollHeight > 0) {
+      setScrollProgress((target.scrollTop / scrollHeight) * 100);
+    }
+  };
+
   return (
     <div
       onClick={onClose}
       role="dialog"
       aria-modal="true"
+      className="as-modal-overlay"
       style={{
         position: 'fixed',
         top: 0,
@@ -32,13 +52,14 @@ export default function BlogModal({ blog, onClose, onStartJourney }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
+        className="as-modal-card"
         style={{
           background: '#FFFDF9',
           borderRadius: '24px',
           maxWidth: '820px',
           width: '100%',
           maxHeight: '92vh',
-          overflowY: 'auto',
+          overflow: 'hidden',
           boxShadow: '0 24px 60px rgba(27,67,50,0.35)',
           border: '1px solid #E8DFC8',
           position: 'relative',
@@ -46,83 +67,111 @@ export default function BlogModal({ blog, onClose, onStartJourney }) {
           flexDirection: 'column',
         }}
       >
-        {/* Hero Image Header */}
-        <div style={{ position: 'relative', width: '100%', height: 280, flexShrink: 0 }}>
-          <img
-            src={blog.imageUrl}
-            alt={blog.title}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: 'linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(27,67,50,0.9) 100%)',
-            }}
-          />
-          <button
-            onClick={onClose}
-            aria-label="Close blog story"
-            style={{
-              position: 'absolute',
-              top: 20,
-              right: 20,
-              background: 'rgba(255, 255, 255, 0.25)',
-              border: 'none',
-              borderRadius: '50%',
-              width: 38,
-              height: 38,
-              fontSize: 18,
-              cursor: 'pointer',
-              color: '#fff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backdropFilter: 'blur(4px)',
-            }}
-          >
-            ✕
-          </button>
+        {/* Scroll Progress Bar */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: `${scrollProgress}%`,
+            height: '4px',
+            background: '#4CAF50',
+            zIndex: 1200,
+            transition: 'width 0.1s ease',
+          }}
+        />
 
-          <div style={{ position: 'absolute', bottom: 24, left: 28, right: 28, color: '#fff' }}>
-            <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 10 }}>
-              <span
+        {/* Sticky/Fixed Close Button */}
+        <button
+          onClick={onClose}
+          aria-label="Close blog story"
+          style={{
+            position: 'absolute',
+            top: 20,
+            right: 20,
+            background: 'rgba(27, 67, 50, 0.85)',
+            border: 'none',
+            borderRadius: '50%',
+            width: 38,
+            height: 38,
+            fontSize: 18,
+            cursor: 'pointer',
+            color: '#fff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backdropFilter: 'blur(4px)',
+            zIndex: 1210,
+          }}
+        >
+          ✕
+        </button>
+
+        {/* Inner Scrollable Container */}
+        <div
+          onScroll={handleScroll}
+          style={{
+            overflowY: 'auto',
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          {/* Hero Image Header */}
+          <div className="as-modal-hero" style={{ position: 'relative', width: '100%', height: 280, flexShrink: 0 }}>
+            <img
+              src={blog.imageUrl}
+              alt={blog.title}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(27,67,50,0.9) 100%)',
+              }}
+            />
+
+            <div className="as-modal-hero-text" style={{ position: 'absolute', bottom: 24, left: 28, right: 28, color: '#fff' }}>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 10 }}>
+                <span
+                  style={{
+                    background: '#2E7D32',
+                    color: '#fff',
+                    padding: '4px 12px',
+                    borderRadius: 999,
+                    fontSize: 11,
+                    fontWeight: 800,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                  }}
+                >
+                  {blog.category}
+                </span>
+                <span style={{ fontSize: 12.5, opacity: 0.9 }}>• By {blog.author}</span>
+                <span style={{ fontSize: 12.5, opacity: 0.9 }}>• {blog.readTime}</span>
+              </div>
+              <h1
+                className="as-modal-hero-title"
                 style={{
-                  background: '#2E7D32',
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: 26,
+                  fontWeight: 700,
+                  margin: 0,
+                  lineHeight: 1.25,
                   color: '#fff',
-                  padding: '4px 12px',
-                  borderRadius: 999,
-                  fontSize: 11,
-                  fontWeight: 800,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
                 }}
               >
-                {blog.category}
-              </span>
-              <span style={{ fontSize: 12.5, opacity: 0.9 }}>• By {blog.author}</span>
-              <span style={{ fontSize: 12.5, opacity: 0.9 }}>• {blog.readTime}</span>
+                {blog.title}
+              </h1>
             </div>
-            <h1
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: 26,
-                fontWeight: 700,
-                margin: 0,
-                lineHeight: 1.25,
-                color: '#fff',
-              }}
-            >
-              {blog.title}
-            </h1>
           </div>
-        </div>
 
         {/* Modal Main Content Body */}
-        <div style={{ padding: '32px 36px 44px' }}>
+        <div className="as-modal-body" style={{ padding: '32px 36px 44px' }}>
           {/* AI Executive Key Takeaways Box */}
           <div
             style={{
@@ -193,9 +242,30 @@ export default function BlogModal({ blog, onClose, onStartJourney }) {
                 </p>
               )}
 
+              {sec.imageUrl && (
+                <div
+                  style={{
+                    margin: '24px auto',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    border: '1px solid #E8DFC8',
+                    boxShadow: '0 8px 24px rgba(27,67,50,0.06)',
+                    maxWidth: '480px',
+                    width: '100%',
+                  }}
+                >
+                  <img
+                    src={sec.imageUrl}
+                    alt={sec.heading || 'Section illustration'}
+                    style={{ width: '100%', height: 'auto', display: 'block' }}
+                  />
+                </div>
+              )}
+
               {/* Bullet points style */}
               {sec.bullets && (
                 <ul
+                  className="as-modal-bullets"
                   style={{
                     background: '#FAF7F0',
                     border: '1px solid #E8DFC8',
@@ -405,6 +475,7 @@ export default function BlogModal({ blog, onClose, onStartJourney }) {
               Start Your Green Journey →
             </button>
           </div>
+        </div>
         </div>
       </div>
     </div>

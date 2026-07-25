@@ -1,16 +1,21 @@
+import blogAmbi1 from '../assets/blogs/blog_ambi_1.png';
+import blogAmbi2 from '../assets/blogs/blog_ambi_2.png';
+import blogAmbi3 from '../assets/blogs/blog_ambi_3.png';
+
 export const blogCategories = [
   'All',
   'Beginner Guide',
   'Sustainable Habits',
   'Home & Energy',
   'Green Mobility',
+  'AmbiSprout',
 ];
 
 export const blogsData = [
   {
     id: 'blog-1',
     slug: 'eco-friendly-lifestyle-guide',
-    isFeatured: true,
+    isFeatured: false,
     title: 'What Is an Eco Friendly Lifestyle? A Complete Beginner Guide for 2026',
     metaTitle: 'What Is an Eco Friendly Lifestyle A Complete Beginner Guide for 2026',
     metaDescription: 'Learn what an eco friendly lifestyle means and discover practical ways to live sustainably. Explore simple habits that reduce waste, save money, and protect the environment.',
@@ -186,6 +191,98 @@ export const blogsData = [
         { q: 'How many sustainable habits should I start with?', a: 'Begin with 1 or 2 habits and gradually add more as they become natural parts of your routine.' },
         { q: 'Can sustainable habits save money?', a: 'Yes. Conserving electricity, reducing food waste, and avoiding disposable items lowers monthly household expenses.' },
         { q: 'Why are sustainable habits important?', a: 'They protect natural resources, lower carbon emissions, reduce plastic pollution, and build healthier communities.' }
+      ]
+    }
+  },
+  {
+    id: 'blog-3',
+    slug: 'what-is-ambisprout-building-sustainable-habits-with-ai',
+    isFeatured: true,
+    title: 'What is AmbiSprout? Building Sustainable Habits with AI',
+    metaTitle: 'What is AmbiSprout Building Sustainable Habits with AI',
+    metaDescription: 'Discover how AmbiSprout leverages Artificial Intelligence, gamification, and behavioral science to turn sustainable living into a simple, rewarding daily routine.',
+    subtitle: 'Sustainability isn\'t a one-time action. It\'s a lifestyle. Learn how AmbiSprout makes eco-friendly habit-building easy, engaging, and personalized.',
+    category: 'AmbiSprout',
+    tag: 'AmbiSprout',
+    author: 'AmbiSprout Editorial',
+    readTime: '5 min read',
+    date: 'July 25, 2026',
+    imageUrl: blogAmbi1,
+    aiTakeaways: [
+      '🌱 Everyday Consistency: Real environmental change starts with everyday actions and millions of people taking small, consistent steps together.',
+      '🤖 Personalized AI Coaching: AmbiSprout uses AI to recommend tailored daily activities and provide practical suggestions instead of just showing numbers.',
+      '🎮 Gamified Habit Building: Features like daily missions, coins, streaks, and community challenges keep users motivated and focused on progress.'
+    ],
+    content: {
+      intro: `Sustainability isn't a one-time action. It's a lifestyle.\n\nMost of us want to live more sustainably. We want to reduce waste, recycle better, save energy, and make environmentally conscious choices. But between work, studies, and daily responsibilities, it's often difficult to know where to start or stay consistent.\n\nThat's exactly why we created AmbiSprout. AmbiSprout is an AI-powered sustainability platform designed to help individuals, communities, educational institutions, and organizations build meaningful environmental habits through personalized guidance, gamification, and measurable impact.\n\nOur goal is simple: make sustainable living easy, engaging, and rewarding.`,
+      sections: [
+        {
+          heading: 'Why AmbiSprout Exists',
+          body: `Climate change is no longer a distant problem. Every day, individuals make hundreds of decisions that impact the environment — from transportation and shopping to food choices and energy consumption.\n\nThe challenge isn't that people don't care. The challenge is that sustainability often feels:\n• Complex\n• Time-consuming\n• Difficult to measure\n• Hard to stay motivated\n\nAmbiSprout bridges that gap by transforming sustainability into an interactive daily experience powered by Artificial Intelligence.`,
+          imageUrl: blogAmbi1
+        },
+        {
+          heading: 'How AmbiSprout Works',
+          body: `Instead of overwhelming users with information, AmbiSprout focuses on small, achievable actions that create long-term habits. The platform learns about your activities and provides personalized recommendations to help you reduce your environmental footprint.\n\nEvery small action contributes to a larger mission. Examples of habits you can build include:`,
+          imageUrl: blogAmbi2,
+          bullets: [
+            'Walking instead of driving short distances',
+            'Reducing electricity usage',
+            'Recycling correctly',
+            'Choosing eco-friendly alternatives',
+            'Participating in community sustainability challenges',
+            'Tracking your positive environmental impact'
+          ]
+        },
+        {
+          heading: 'AI That Helps You Make Better Decisions',
+          body: `Artificial Intelligence sits at the heart of AmbiSprout.\n\nRather than simply displaying statistics, our AI helps users understand:\n• Their sustainability habits\n• Areas where they can improve\n• Personalized eco-friendly suggestions\n• Progress over time\n• Practical ways to reduce their carbon footprint\n\nThe more you engage, the smarter the recommendations become. Our vision is to make sustainability feel like having a knowledgeable companion guiding you every day.`
+        },
+        {
+          heading: 'Making Sustainability Fun',
+          body: `Building habits shouldn't feel like homework. That's why AmbiSprout incorporates gamification throughout the platform. The focus isn't competition — it's consistency. Small actions repeated daily create meaningful environmental impact.\n\nUsers can interact with features designed to build habits:`,
+          imageUrl: blogAmbi3,
+          bullets: [
+            'Complete sustainability missions',
+            'Earn points and achievements',
+            'Maintain daily streaks',
+            'Participate in campaigns',
+            'Join community challenges',
+            'Celebrate milestones'
+          ]
+        },
+        {
+          heading: 'Built for Everyone',
+          body: `AmbiSprout is designed for multiple audiences. Whether you are trying to make a difference at home, school, or work, our platform fits your needs:`,
+          list: [
+            { title: 'Individuals', desc: 'Anyone looking to adopt a greener lifestyle can use AmbiSprout to build better habits and monitor their progress.' },
+            { title: 'Educational Institutions', desc: 'Schools and colleges can encourage students to participate in sustainability campaigns while tracking engagement and outcomes.' },
+            { title: 'Organizations', desc: 'Companies can launch ESG and CSR initiatives, engage employees, and measure participation through a unified platform.' },
+            { title: 'Communities', desc: 'Local groups, NGOs, and environmental organizations can organize campaigns and inspire collective action.' }
+          ]
+        },
+        {
+          heading: 'Looking Ahead',
+          body: `AmbiSprout is only getting started. We believe technology should empower people to make better decisions — not complicate them. Our roadmap includes:`,
+          bullets: [
+            'AI-powered sustainability coaching',
+            'Carbon footprint estimation',
+            'Smart activity verification',
+            'Receipt analysis for sustainable purchases',
+            'Voice-based AI assistant',
+            'Community-driven environmental campaigns',
+            'Advanced analytics for institutions and enterprises'
+          ]
+        },
+        {
+          heading: 'Our Mission',
+          body: `At AmbiSprout, we believe that meaningful environmental change begins with everyday actions.\n\nBy combining Artificial Intelligence, behavioral science, and engaging experiences, we're creating a platform that helps people make sustainability a natural part of daily life.\n\nThe future won't be shaped by a handful of perfect environmentalists. It will be shaped by millions of people taking small, consistent steps together.\n\nAnd that's exactly what AmbiSprout is here to enable.\n\nLet's grow a greener future — one habit at a time. 🌱`
+        }
+      ],
+      faqs: [
+        { q: 'What is AmbiSprout?', a: 'AmbiSprout is an AI-powered sustainability platform designed to help individuals, communities, and organizations build environmental habits through gamification and personalized coaching.' },
+        { q: 'How does the AI work in AmbiSprout?', a: 'Our AI analyzes your daily routines and suggests small, personalized green choices, adapting over time as you log actions.' },
+        { q: 'Is AmbiSprout only for individuals?', a: 'No, AmbiSprout is built for individuals, schools, companies, and community organizations to track and verify sustainability achievements together.' }
       ]
     }
   }
