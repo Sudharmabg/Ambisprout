@@ -42,7 +42,7 @@ const labelStyle = {
   color: '#6B7280',
 };
 
-export default function Hero({ onOpenChat }) {
+export default function Hero({ onOpenChat, onStartJourney }) {
   const [imgOk, setImgOk] = useState(true);
 
   return (
@@ -142,8 +142,8 @@ export default function Hero({ onOpenChat }) {
           }}
         >
           <Hoverable
-            as="a"
-            href="#journey-section"
+            as="button"
+            onClick={onStartJourney}
             style={{
               display: 'inline-flex',
               alignItems: 'center',

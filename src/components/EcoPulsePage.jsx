@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ecoNewsCategories, initialEcoNewsData } from '../data.js';
 import AddNewsModal from './AddNewsModal.jsx';
-import NewsModal from './NewsModal.jsx';
+import NewsPage from './NewsPage.jsx';
 import Hoverable from './Hoverable.jsx';
 
 export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney }) {
@@ -74,7 +74,18 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
         </div>
       )}
 
-      {/* Top Header Navigation Bar for Eco Pulse */}
+      {activeNewsModal ? (
+        <NewsPage
+          article={activeNewsModal}
+          onClose={() => setActiveNewsModal(null)}
+          onSelectArticle={(item) => setActiveNewsModal(item)}
+          onTakeAction={handleTakeAction}
+          onStartJourney={onStartJourney}
+          newsList={newsList}
+        />
+      ) : (
+        <>
+          {/* Top Header Navigation Bar for Eco Pulse */}
       <div
         style={{
           background: 'linear-gradient(135deg, #1B4332 0%, #16382a 100%)',
@@ -472,6 +483,8 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
           </button>
         </div>
       </div>
+        </>
+      )}
 
       {/* Put In News Modal */}
       <AddNewsModal
@@ -480,12 +493,7 @@ export default function EcoPulsePage({ onBackToHome, onOpenChat, onStartJourney 
         onAddNews={handleAddNewStory}
       />
 
-      {/* Story Reader Modal */}
-      <NewsModal
-        article={activeNewsModal}
-        onClose={() => setActiveNewsModal(null)}
-        onTakeAction={handleTakeAction}
-      />
+
     </div>
   );
 }

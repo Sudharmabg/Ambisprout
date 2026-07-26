@@ -10,7 +10,7 @@ const links = [
   { label: 'Blogs', href: '#blogs-page', view: 'blogs-page' },
 ];
 
-export default function Nav({ onLogoClick, onOpenChat, currentView, onNavigate }) {
+export default function Nav({ onLogoClick, onOpenChat, currentView, onNavigate, onStartJourney }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleLinkClick = (e, link) => {
@@ -94,8 +94,8 @@ export default function Nav({ onLogoClick, onOpenChat, currentView, onNavigate }
         <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
           <div className="as-nav-desktop-button">
             <Hoverable
-              as="a"
-              href="#journey-section"
+              as="button"
+              onClick={onStartJourney}
               style={{
                 background: '#2E7D32',
                 border: 'none',
@@ -213,8 +213,7 @@ export default function Nav({ onLogoClick, onOpenChat, currentView, onNavigate }
         </div>
 
         <div style={{ marginTop: 'auto', paddingTop: 20 }}>
-          <a
-            href="#journey-section"
+          <button
             style={{
               width: '100%',
               background: '#2E7D32',
@@ -232,10 +231,13 @@ export default function Nav({ onLogoClick, onOpenChat, currentView, onNavigate }
               textAlign: 'center',
               boxSizing: 'border-box',
             }}
-            onClick={() => setDrawerOpen(false)}
+            onClick={() => {
+              setDrawerOpen(false);
+              if (onStartJourney) onStartJourney();
+            }}
           >
             Start Your Green Journey
-          </a>
+          </button>
         </div>
       </div>
     </>

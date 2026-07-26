@@ -12,6 +12,7 @@ import Footer from './components/Footer.jsx';
 import ChatWidget from './components/ChatWidget.jsx';
 import EcoPulsePage from './components/EcoPulsePage.jsx';
 import BlogsPage from './components/BlogsPage.jsx';
+import SubscribeModal from './components/SubscribeModal.jsx';
 import logoImg from './assets/logo.png';
 import sproutImg from './assets/sprout_ai.jpeg';
 
@@ -20,6 +21,10 @@ export default function App() {
   const [logoFullscreen, setLogoFullscreen] = useState(false);
   const [showFloatingChat, setShowFloatingChat] = useState(false);
   const [currentHash, setCurrentHash] = useState(window.location.hash);
+  const [subscribeModalOpen, setSubscribeModalOpen] = useState(false);
+
+  const openSubscribeModal = () => setSubscribeModalOpen(true);
+  const closeSubscribeModal = () => setSubscribeModalOpen(false);
   const [currentView, setCurrentView] = useState(() => {
     if (window.location.hash === '#eco-pulse') return 'eco-pulse';
     if (window.location.hash === '#blogs-page' || window.location.hash === '#blogs' || window.location.hash.startsWith('#blog/')) return 'blogs-page';
@@ -105,39 +110,35 @@ export default function App() {
         onOpenChat={openChat}
         currentView={currentView}
         onNavigate={navigateTo}
+        onStartJourney={openSubscribeModal}
       />
       {currentView === 'eco-pulse' ? (
         <EcoPulsePage
           onBackToHome={() => navigateTo('home')}
           onOpenChat={openChat}
-          onStartJourney={() => {
-            navigateTo('home');
-            window.location.hash = '#journey-section';
-          }}
+          onStartJourney={openSubscribeModal}
         />
       ) : currentView === 'blogs-page' ? (
         <BlogsPage
           initialBlogSlug={currentHash.startsWith('#blog/') ? currentHash.replace('#blog/', '') : null}
           onBackToHome={() => navigateTo('home')}
-          onStartJourney={() => {
-            navigateTo('home');
-            window.location.hash = '#journey-section';
-          }}
+          onStartJourney={openSubscribeModal}
         />
       ) : (
         <main>
-          <Hero onOpenChat={openChat} />
+          <Hero onOpenChat={openChat} onStartJourney={openSubscribeModal} />
           <Features />
           <GreenJourney />
           <Challenges />
           <Community />
           <AISection onOpenChat={openChat} />
           <Trust />
-          <FinalCTA onOpenChat={openChat} />
+          <FinalCTA onOpenChat={openChat} onStartJourney={openSubscribeModal} />
         </main>
       )}
       <Footer onLogoClick={openLogoFullscreen} />
       <ChatWidget open={chatOpen} onClose={closeChat} />
+      <SubscribeModal isOpen={subscribeModalOpen} onClose={closeSubscribeModal} />
 
       {!chatOpen && showFloatingChat && (
         <>

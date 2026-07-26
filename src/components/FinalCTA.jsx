@@ -5,7 +5,7 @@ import FeatureIcon from './FeatureIcon.jsx';
 
 const microPoints = ['100% free', 'AI-verified impact', 'Made for India'];
 
-export default function FinalCTA({ onOpenChat }) {
+export default function FinalCTA({ onOpenChat, onStartJourney }) {
   return (
     <Section
       animate={false}
@@ -48,8 +48,8 @@ export default function FinalCTA({ onOpenChat }) {
 
             <div className="as-cta-buttons as-cta-actions">
               <Hoverable
-                as="a"
-                href="#journey-section"
+                as="button"
+                onClick={onStartJourney}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',

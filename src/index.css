@@ -2120,4 +2120,34 @@ img, video, svg, canvas {
   }
 }
 
+/* Custom Flex Hero layout for the AmbiSprout Blog */
+.as-hero-flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+.as-hero-logo-container {
+  width: 30%;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 760px) {
+  .as-hero-flex {
+    flex-direction: column-reverse !important;
+    align-items: flex-start !important;
+    gap: 24px !important;
+    padding: 32px 24px !important;
+  }
+  .as-hero-logo-container {
+    width: 100% !important;
+    justify-content: center !important;
+    margin-bottom: 8px;
+  }
+}
+
 

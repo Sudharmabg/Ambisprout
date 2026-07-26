@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { blogCategories, blogsData } from '../data/blogsData.js';
-import BlogModal from './BlogModal.jsx';
+import BlogPage from './BlogPage.jsx';
 import Hoverable from './Hoverable.jsx';
+import logoImg from '../assets/logo.png';
 
 export default function BlogsPage({ initialBlogSlug, onBackToHome, onStartJourney }) {
   const [blogs] = useState(blogsData);
@@ -66,6 +67,16 @@ export default function BlogsPage({ initialBlogSlug, onBackToHome, onStartJourne
   const regularBlogs = showFeaturedSpotlight
     ? filteredBlogs.filter((b) => b.id !== featuredBlog?.id)
     : filteredBlogs;
+
+  if (activeBlogModal) {
+    return (
+      <BlogPage
+        blog={activeBlogModal}
+        onClose={handleCloseBlog}
+        onStartJourney={onStartJourney}
+      />
+    );
+  }
 
   return (
     <div
@@ -141,11 +152,65 @@ export default function BlogsPage({ initialBlogSlug, onBackToHome, onStartJourne
             className="as-headline-grid"
           >
             <div className="as-featured-img-container" style={{ position: 'relative', height: '100%', width: '100%' }}>
-              <img
-                src={featuredBlog.imageUrl}
-                alt={featuredBlog.title}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
+              {featuredBlog.slug === 'what-is-ambisprout-building-sustainable-habits-with-ai' ? (
+                <div
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    background: '#1B4332',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '12px',
+                    padding: '24px',
+                    boxSizing: 'border-box',
+                  }}
+                >
+                  <img
+                    src={logoImg}
+                    alt="AmbiSprout Logo"
+                    style={{
+                      width: '120px',
+                      height: '120px',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                      border: '4px solid #4CAF50',
+                      boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+                    }}
+                  />
+                  <div style={{ textAlign: 'center' }}>
+                    <div
+                      style={{
+                        fontFamily: "'Playfair Display', serif",
+                        fontSize: '20px',
+                        fontWeight: 700,
+                        color: '#fff',
+                        marginBottom: '4px',
+                      }}
+                    >
+                      AmbiSprout
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: "'Manrope', sans-serif",
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        color: '#4CAF50',
+                        letterSpacing: '0.5px',
+                      }}
+                    >
+                      Small Action Big Impact
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <img
+                  src={featuredBlog.imageUrl}
+                  alt={featuredBlog.title}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              )}
               <span
                 style={{
                   position: 'absolute',
@@ -325,29 +390,99 @@ export default function BlogsPage({ initialBlogSlug, onBackToHome, onStartJourne
                 }}
                 hoverStyle={{ transform: 'translateY(-6px)', boxShadow: '0 16px 36px rgba(27,67,50,0.12)' }}
               >
-                <div style={{ position: 'relative', height: 200, width: '100%' }}>
-                  <img
-                    src={blog.imageUrl}
-                    alt={blog.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                  <span
+                {blog.slug === 'what-is-ambisprout-building-sustainable-habits-with-ai' ? (
+                  <div
                     style={{
-                      position: 'absolute',
-                      top: 14,
-                      left: 14,
-                      background: 'rgba(27,67,50,0.85)',
-                      color: '#4CAF50',
-                      padding: '4px 10px',
-                      borderRadius: 999,
-                      fontSize: 11,
-                      fontWeight: 800,
-                      backdropFilter: 'blur(4px)',
+                      position: 'relative',
+                      height: 200,
+                      width: '100%',
+                      background: '#1B4332',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      boxSizing: 'border-box',
+                      padding: '12px',
                     }}
                   >
-                    {blog.category}
-                  </span>
-                </div>
+                    <img
+                      src={logoImg}
+                      alt="AmbiSprout Logo"
+                      style={{
+                        width: '80px',
+                        height: '80px',
+                        borderRadius: '50%',
+                        objectFit: 'cover',
+                        border: '3px solid #4CAF50',
+                        boxShadow: '0 6px 16px rgba(0,0,0,0.25)',
+                      }}
+                    />
+                    <div style={{ textAlign: 'center' }}>
+                      <div
+                        style={{
+                          fontFamily: "'Playfair Display', serif",
+                          fontSize: '16px',
+                          fontWeight: 700,
+                          color: '#fff',
+                          marginBottom: '2px',
+                        }}
+                      >
+                        AmbiSprout
+                      </div>
+                      <div
+                        style={{
+                          fontFamily: "'Manrope', sans-serif",
+                          fontSize: '10.5px',
+                          fontWeight: 600,
+                          color: '#4CAF50',
+                        }}
+                      >
+                        Small Action Big Impact
+                      </div>
+                    </div>
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: 14,
+                        left: 14,
+                        background: 'rgba(27,67,50,0.85)',
+                        color: '#4CAF50',
+                        padding: '4px 10px',
+                        borderRadius: 999,
+                        fontSize: 11,
+                        fontWeight: 800,
+                        backdropFilter: 'blur(4px)',
+                      }}
+                    >
+                      {blog.category}
+                    </span>
+                  </div>
+                ) : (
+                  <div style={{ position: 'relative', height: 200, width: '100%' }}>
+                    <img
+                      src={blog.imageUrl}
+                      alt={blog.title}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: 14,
+                        left: 14,
+                        background: 'rgba(27,67,50,0.85)',
+                        color: '#4CAF50',
+                        padding: '4px 10px',
+                        borderRadius: 999,
+                        fontSize: 11,
+                        fontWeight: 800,
+                        backdropFilter: 'blur(4px)',
+                      }}
+                    >
+                      {blog.category}
+                    </span>
+                  </div>
+                )}
 
                 <div style={{ padding: '22px', display: 'flex', flexDirection: 'column', flex: 1 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#6B7280', marginBottom: 8 }}>
@@ -393,13 +528,6 @@ export default function BlogsPage({ initialBlogSlug, onBackToHome, onStartJourne
           </div>
         )}
       </div>
-
-      {/* Full Reader Modal */}
-      <BlogModal
-        blog={activeBlogModal}
-        onClose={handleCloseBlog}
-        onStartJourney={onStartJourney}
-      />
     </div>
   );
 }
